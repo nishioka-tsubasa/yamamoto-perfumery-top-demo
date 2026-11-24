@@ -10,12 +10,13 @@
 <meta property="og:title" content="山本香料株式会社｜トップページ デザインデモ">
 <meta property="og:description" content="コーポレートサイト リニューアル案（トップページ）の、動きつきデザインデモです。">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://nishioka-tsubasa.github.io/yamamoto-perfumery-top-demo/assets/hero.jpg">
+<meta property="og:image" content="https://nishioka-tsubasa.github.io/yamamoto-perfumery-top-demo/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B2C24'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23F6F2E9'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/hero.jpg">
+<link rel="preload" as="image" href="assets/fv-calligraphy.webp">
 <script>(function(){var d=document.documentElement;try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.className+=' js';var w=d.clientWidth||window.innerWidth,p=window.matchMedia('(min-width:768px)').matches;d.style.setProperty('--k',p?Math.min(w,1920)/1440:w/390);setTimeout(function(){d.className+=' is-ready'},4500)}catch(e){}})();</script>
 <style>
 /* ===== カンプ（PC）の見た目 ===== */
@@ -65,7 +66,7 @@
 .sp .haze{position:absolute;border-radius:50%;pointer-events:none}
 .sp .pt{opacity:.85}
 </style>
-<link rel="stylesheet" href="demo.css?v=88f1b471">
+<link rel="stylesheet" href="demo.css?v=eaa942f5">
 </head>
 <body>
 <!-- PC（幅768px以上）：1440pxのカンプを画面幅に合わせて表示 -->
@@ -74,12 +75,9 @@
 
 <!-- 01 FV -->
 <section class="sec" data-sec="fv" data-tone="dark" style="height: 900px; background: #0B2C24; color: #fff">
-  <div class="plx" data-plx=".16" data-plx-fv><img decoding="async" data-op="hero" src="assets/hero.jpg" alt="白い花のやわらかな光" fetchpriority="high" style="position: absolute; left: -40px; top: -150px; width: 1560px; height: auto"></div>
-  <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,44,36,.97) 0%, rgba(9,44,36,.92) 30%, rgba(9,44,36,.66) 46%, rgba(9,44,36,.22) 61%, rgba(9,44,36,.02) 78%, rgba(9,44,36,.1) 100%)"></div>
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,44,36,.66) 0%, rgba(9,44,36,0) 24%, rgba(9,44,36,0) 70%, rgba(9,44,36,.9) 100%)"></div>
-  <div class="haze" style="left: 800px; top: 150px; width: 640px; height: 640px; background: radial-gradient(closest-side, rgba(255,255,255,.3), rgba(255,255,255,0))"></div>
-
-  <div class="en" aria-hidden="true" data-op="fade" data-d="1.2" style="position: absolute; right: 64px; top: 138px; font-size: 76px; line-height: 1.02; letter-spacing: .08em; text-align: right; text-transform: uppercase; color: rgba(255,255,255,.2)">Sensory<br>Experience</div>
+  <div class="haze" style="left: 660px; top: 150px; width: 900px; height: 900px; background: radial-gradient(closest-side, rgba(126,176,150,.24), rgba(126,176,150,0))"></div>
+  <div class="plx" data-plx=".16" data-plx-fv><div class="ink" style="position: absolute; left: 298px; top: 241px; width: 1300px; height: 654px; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 28%); mask-image: linear-gradient(180deg, transparent 0, #000 28%)" data-op="hero"><img decoding="async" src="assets/fv-calligraphy.webp" fetchpriority="high" alt="風が舞うような墨の書" style="display: block; width: 1300px; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 35%, #000 60%); mask-image: linear-gradient(90deg, transparent 0, transparent 35%, #000 60%)"></div></div>
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,44,36,.55) 0%, rgba(9,44,36,0) 16%, rgba(9,44,36,0) 82%, rgba(9,44,36,.9) 100%)"></div>
 
   <header class="fg" data-op="down" data-d=".5" style="position: absolute; left: 0; top: 0; width: 1440px; height: 104px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px">
     <a href="#"><img decoding="async" src="assets/logo.png" alt="山本香料株式会社" style="display: block; height: 27px; filter: brightness(0) invert(1)"></a>
@@ -94,14 +92,9 @@
     <div data-op="fade" data-d=".7" style="display: flex; align-items: center; gap: 28px">
       <span class="en" style="font-size: 14px; letter-spacing: .36em">THE WORLD OF SCENT</span>
       <span style="width: 64px; height: 1px; background: rgba(255,255,255,.5)"></span>
-      <span class="en" style="font-size: 14px; letter-spacing: .3em">01 — 05</span>
     </div>
     <h1 data-op="chars" data-d=".9" style="margin-top: 34px; font-size: 132px; line-height: 1.3; letter-spacing: .1em; white-space: nowrap">香りを<br>かたちに。</h1>
     <p data-op="up" data-d="2.1" style="margin-top: 34px; font-size: 18px; line-height: 2.2; letter-spacing: .2em">見えないのに、心を動かすもの。<br>その一瞬を、香りの力で生み出していく。</p>
-  </div>
-
-  <div data-op="arch" data-d="1.5" style="position: absolute; left: 1148px; top: 512px; width: 216px; height: 292px; border-radius: 108px 108px 0 0; overflow: hidden; border: 5px solid rgba(246,242,233,.6); z-index: 4">
-    <img decoding="async" class="ph" src="assets/lavender.jpg" alt="ラベンダー">
   </div>
 
   <div class="fg" data-op="fade" data-d="2.4" style="position: absolute; left: 0; bottom: 0; width: 1440px; height: 72px; border-top: 1px solid rgba(255,255,255,.22); display: flex; align-items: center; justify-content: space-between; padding: 0 64px; font-size: 14px; letter-spacing: .2em">
@@ -124,9 +117,9 @@
   </div>
 
   <div style="position: absolute; left: 800px; top: 60px; width: 640px; height: 920px">
-    <div class="cut" style="top: 0; height: 340px"><img decoding="async" class="ph" src="assets/citrus.jpg" alt="みずみずしい柑橘の断面"></div>
-    <div class="cut" style="top: 284px; height: 360px"><img decoding="async" class="ph" src="assets/oil.jpg" alt="瓶に落ちる精油の一滴" style="width: 122%; max-width: none; margin-left: -6%"></div>
-    <div class="cut" style="top: 588px; height: 332px"><img decoding="async" class="ph" src="assets/perfume.jpg" alt="香粧品をイメージした香水瓶"></div>
+    <div class="cut" style="top: 0; height: 340px"><img decoding="async" class="ph" src="assets/about-fresh.jpg" alt="枝に実る柚子" style="object-position: 50% 42%"></div>
+    <div class="cut" style="top: 284px; height: 360px"><img decoding="async" class="ph" src="assets/about-essence.jpg" alt="精油の瓶とバスソルト"></div>
+    <div class="cut" style="top: 588px; height: 332px"><img decoding="async" class="ph" src="assets/cat-ceramide.jpg" alt="化粧品の瓶が並ぶ洗面台" style="object-position: 60% 50%"></div>
   </div>
   <div class="cap fg" style="top: 250px"><span class="en" style="font-size: 14px; letter-spacing: .3em">FRESH</span><span style="font-size: 12px; letter-spacing: .2em">フレッシュ</span></div>
   <div class="cap fg" style="top: 544px"><span class="en" style="font-size: 14px; letter-spacing: .3em">ESSENCE</span><span style="font-size: 12px; letter-spacing: .2em">精油</span></div>
@@ -145,8 +138,7 @@
   <p class="lead fg" style="position: absolute; left: 760px; top: 262px">香りの力を、もっと身近に。<br>山本香料ならではの発想から生まれた、<br>生活に寄り添うオリジナル製品です。</p>
 
   <article style="position: absolute; left: 120px; top: 470px; width: 588px">
-    <div style="height: 400px; overflow: hidden"><img decoding="async" class="ph" src="assets/life-sticker.jpg" alt="マスクにアロマシールを貼る手元"></div>
-    <img decoding="async" src="assets/pkg-sticker.jpg" alt="マスクに貼るアロマ 4種のパッケージ" style="position: absolute; z-index: 7; right: 28px; top: 312px; width: 236px; height: 133px; object-fit: cover; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(27,42,37,.16)">
+    <div style="height: 400px; overflow: hidden"><img decoding="async" class="ph" src="assets/pkg-sticker.jpg" alt="マスクに貼るアロマ 4種のパッケージとシール"></div>
     <div class="fg" style="height: 214px; padding: 38px 36px 0; background: #fff">
       <div class="en" style="font-size: 13px; letter-spacing: .3em; color: #6A5BA8">01 / AROMA STICKER</div>
       <h3 style="margin-top: 14px; font-size: 30px; letter-spacing: .1em">マスクに貼るアロマ</h3>
@@ -156,8 +148,7 @@
   </article>
 
   <article style="position: absolute; left: 732px; top: 470px; width: 588px">
-    <div style="height: 400px; overflow: hidden"><img decoding="async" class="ph" src="assets/life-spray.jpg" alt="マスクにアロマスプレーを吹きかける手元"></div>
-    <img decoding="async" src="assets/pkg-spray.jpg" alt="マスクに吹くアロマ 6種のボトル" style="position: absolute; z-index: 7; right: 28px; top: 312px; width: 236px; height: 133px; object-fit: cover; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(27,42,37,.16)">
+    <div style="height: 400px; overflow: hidden"><img decoding="async" class="ph" src="assets/pkg-spray.jpg" alt="マスクに吹くアロマ 6種のボトル"></div>
     <div class="fg" style="height: 214px; padding: 38px 36px 0; background: #fff">
       <div class="en" style="font-size: 13px; letter-spacing: .3em; color: #6A5BA8">02 / AROMA SPRAY</div>
       <h3 style="margin-top: 14px; font-size: 30px; letter-spacing: .1em">マスクに吹くアロマ</h3>
@@ -165,7 +156,6 @@
       <a class="ar" href="#" aria-label="マスクに吹くアロマを見る" style="position: absolute; right: 36px; bottom: 34px"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
     </div>
   </article>
-  <p class="go fg" style="position: absolute; left: 120px; top: 1106px; font-size: 11px; letter-spacing: .06em; color: #5C6B65">※パッケージ写真は山本香料株式会社の現行公式サイト掲載素材を使用しています。</p>
 </section>
 
 <!-- 04 FRAGRANCE LINEUP -->
@@ -183,27 +173,27 @@
   </div>
 
   <a href="#" style="position: absolute; left: 120px; top: 446px; width: 216px; display: block">
-    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/lavender.jpg" alt="ラベンダー"></div>
+    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-natural.jpg" alt="かすみ草と精油のボトル" style="object-position: 42% 50%"></div>
     <div class="fg" style="margin-top: 22px; display: flex; align-items: baseline; gap: 14px"><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #CFC6F2">01</span><span style="font-size: 19px; letter-spacing: .12em">天然精油</span></div>
     <div class="fg en" style="margin-top: 6px; padding-left: 33px; font-size: 14px; font-style: italic; letter-spacing: .06em; color: rgba(255,255,255,.66)">Natural Essential Oil</div>
   </a>
   <a href="#" style="position: absolute; left: 366px; top: 446px; width: 216px; display: block">
-    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/flower.jpg" alt="白い花"></div>
+    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-organic.jpg" alt="精油を保管する褐色の瓶" style="object-position: 40% 50%"></div>
     <div class="fg" style="margin-top: 22px; display: flex; align-items: baseline; gap: 14px"><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #CFC6F2">02</span><span style="font-size: 19px; letter-spacing: .12em">オーガニック精油</span></div>
     <div class="fg en" style="margin-top: 6px; padding-left: 33px; font-size: 14px; font-style: italic; letter-spacing: .06em; color: rgba(255,255,255,.66)">Organic Essential Oil</div>
   </a>
   <a href="#" style="position: absolute; left: 612px; top: 446px; width: 216px; display: block">
-    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/perfume.jpg" alt="香水瓶"></div>
+    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-fragrance.jpg" alt="バラの花" style="object-position: 30% 50%"></div>
     <div class="fg" style="margin-top: 22px; display: flex; align-items: baseline; gap: 14px"><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #CFC6F2">03</span><span style="font-size: 19px; letter-spacing: .12em">香粧品香料</span></div>
     <div class="fg en" style="margin-top: 6px; padding-left: 33px; font-size: 14px; font-style: italic; letter-spacing: .06em; color: rgba(255,255,255,.66)">Cosmetic Fragrance</div>
   </a>
   <a href="#" style="position: absolute; left: 858px; top: 446px; width: 216px; display: block">
-    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/citrus.jpg" alt="柑橘"></div>
+    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-flavor.jpg" alt="葉と精油を並べた卓上" style="object-position: 46% 50%"></div>
     <div class="fg" style="margin-top: 22px; display: flex; align-items: baseline; gap: 14px"><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #CFC6F2">04</span><span style="font-size: 19px; letter-spacing: .12em">食品香料</span></div>
     <div class="fg en" style="margin-top: 6px; padding-left: 33px; font-size: 14px; font-style: italic; letter-spacing: .06em; color: rgba(255,255,255,.66)">Food Flavor</div>
   </a>
   <a href="#" style="position: absolute; left: 1104px; top: 446px; width: 216px; display: block">
-    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/diffuser.jpg" alt="ガラス瓶とスティック"></div>
+    <div style="height: 300px; border-radius: 108px 108px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-other.jpg" alt="白いボトルとタオル" style="object-position: 58% 50%"></div>
     <div class="fg" style="margin-top: 22px; display: flex; align-items: baseline; gap: 14px"><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #CFC6F2">05</span><span style="font-size: 19px; letter-spacing: .12em">セラミド・その他</span></div>
     <div class="fg en" style="margin-top: 6px; padding-left: 33px; font-size: 14px; font-style: italic; letter-spacing: .06em; color: rgba(255,255,255,.66)">Ceramide &amp; Others</div>
   </a>
@@ -212,7 +202,7 @@
 <!-- 05 TECHNOLOGY -->
 <section class="sec" data-sec="technology" data-tone="light" style="height: 1180px; background: #F6F2E9">
   <div class="haze" style="left: 900px; top: 380px; width: 820px; height: 820px; background: radial-gradient(closest-side, rgba(170,152,226,.2), rgba(170,152,226,0))"></div>
-  <div style="position: absolute; left: 0; top: 0; width: 780px; height: 640px; overflow: hidden"><img decoding="async" class="ph" src="assets/researcher.jpg" alt="香りを確かめる研究者" style="object-position: 62% 50%"></div>
+  <div style="position: absolute; left: 0; top: 0; width: 780px; height: 640px; overflow: hidden"><img decoding="async" class="ph" src="assets/perfumer.jpg" alt="原料の香りを確かめる社員" style="object-position: 18% 50%"></div>
   <div class="en fg" style="position: absolute; left: 120px; top: 662px; font-size: 13px; letter-spacing: .34em; color: #4F6E5C">THE SCIENCE BEHIND SCENT</div>
 
   <div class="fg" style="position: absolute; left: 880px; top: 124px">
@@ -223,15 +213,15 @@
   </div>
 
   <a href="#" style="position: absolute; left: 120px; top: 756px; width: 384px; display: block">
-    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/bottles.jpg" alt="調香に使う香料の瓶"></div>
+    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-research.jpg" alt="処方を書き留めるペンと資料"></div>
     <div class="fg" style="display: flex; align-items: center; gap: 18px; height: 78px; border-bottom: 1px solid rgba(27,42,37,.22)"><span class="en" style="font-size: 18px; letter-spacing: .1em; color: #6A5BA8">01</span><span style="font-size: 20px; letter-spacing: .14em">研究・開発</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></div>
   </a>
   <a href="#" style="position: absolute; left: 528px; top: 756px; width: 384px; display: block">
-    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/lab.jpg" alt="香料を充填する設備"></div>
+    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-factory.jpg" alt="柏原工場のエアシャワー" style="object-position: 50% 30%"></div>
     <div class="fg" style="display: flex; align-items: center; gap: 18px; height: 78px; border-bottom: 1px solid rgba(27,42,37,.22)"><span class="en" style="font-size: 18px; letter-spacing: .1em; color: #6A5BA8">02</span><span style="font-size: 20px; letter-spacing: .14em">製造・生産</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></div>
   </a>
   <a href="#" style="position: absolute; left: 936px; top: 756px; width: 384px; display: block">
-    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/perfumer.jpg" alt="原料の香りを確かめる社員" style="object-position: 30% 40%"></div>
+    <div style="height: 236px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-quality.jpg" alt="分析機器を扱う研究所の社員" style="object-position: 50% 24%"></div>
     <div class="fg" style="display: flex; align-items: center; gap: 18px; height: 78px; border-bottom: 1px solid rgba(27,42,37,.22)"><span class="en" style="font-size: 18px; letter-spacing: .1em; color: #6A5BA8">03</span><span style="font-size: 20px; letter-spacing: .14em">品質管理</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></div>
   </a>
 </section>
@@ -286,11 +276,9 @@
 
 <!-- 09 CONTACT -->
 <section class="sec" data-sec="contact" data-tone="dark" style="height: 640px; background: #0B2C24; color: #fff">
-  <div class="plx" data-plx="70"><img decoding="async" src="assets/hero.jpg" alt="白い花" style="position: absolute; left: -202px; top: -509px; width: 1950px; height: auto"></div>
-  <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,44,36,.98) 0%, rgba(9,44,36,.94) 34%, rgba(9,44,36,.74) 54%, rgba(9,44,36,.42) 76%, rgba(9,44,36,.5) 100%)"></div>
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,44,36,.7) 0%, rgba(9,44,36,0) 30%, rgba(9,44,36,0) 66%, rgba(9,44,36,.8) 100%)"></div>
-  <div class="haze" style="left: 780px; top: -60px; width: 660px; height: 660px; background: radial-gradient(closest-side, rgba(255,255,255,.2), rgba(255,255,255,0))"></div>
-  <div class="haze" style="left: -260px; top: 220px; width: 800px; height: 800px; background: radial-gradient(closest-side, rgba(150,130,224,.22), rgba(150,130,224,0))"></div>
+  <div class="haze" style="left: 700px; top: -140px; width: 820px; height: 820px; background: radial-gradient(closest-side, rgba(126,176,150,.2), rgba(126,176,150,0))"></div>
+  <div class="haze" style="left: -260px; top: 220px; width: 800px; height: 800px; background: radial-gradient(closest-side, rgba(150,130,224,.2), rgba(150,130,224,0))"></div>
+  <div class="plx" data-plx="40"><div class="ink" style="position: absolute; left: 110px; top: -182px; width: 1600px; height: 804px; opacity: .5; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 82%, transparent 100%)"><img decoding="async" src="assets/fv-calligraphy.webp" alt="" style="display: block; width: 1600px; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 45%, #000 72%); mask-image: linear-gradient(90deg, transparent 0, transparent 45%, #000 72%)"></div></div>
   <div class="fg" style="position: absolute; left: 120px; top: 110px">
     <div class="head"><span class="label" style="color: #CFC6F2">Contact</span><span class="rule"></span><span class="num">09</span></div>
     <h2 style="margin-top: 36px; font-size: 76px; line-height: 1.5; letter-spacing: .1em; white-space: nowrap">まだない香りを、<br>一緒に。</h2>
@@ -330,16 +318,16 @@
       <stop offset=".9624" stop-color="#7C9E8B"/><stop offset="1" stop-color="#7C9E8B"/>
     </linearGradient>
   </defs>
-  <path class="ln" data-line="a" d="M1010,465 C1001,488 990,553 955,600 C920,647 851,701 800,745 C749,789 673,824 650,865 C627,906 630,948 660,990 C690,1032 763,1070 830,1120 C897,1170 988,1230 1060,1290 C1132,1350 1206,1413 1260,1480 C1314,1547 1363,1620 1385,1690 C1407,1760 1390,1823 1392,1900 C1394,1977 1403,2067 1395,2150 C1387,2233 1391,2332 1345,2400 C1299,2468 1211,2517 1120,2560 C1029,2603 907,2630 800,2660 C693,2690 578,2717 480,2740 C382,2763 276,2770 210,2800 C144,2830 107,2870 84,2920 C61,2970 68,3037 70,3100 C72,3163 94,3237 96,3300 C98,3363 67,3423 84,3480 C101,3537 127,3593 200,3640 C273,3687 403,3728 520,3760 C637,3792 783,3813 900,3830 C1017,3847 1137,3835 1220,3860 C1303,3885 1372,3932 1400,3980 C1428,4028 1386,4080 1385,4150 C1384,4220 1406,4315 1392,4400 C1378,4485 1359,4598 1300,4660 C1241,4722 1120,4730 1040,4770 C960,4810 900,4852 820,4900 C740,4948 647,5015 560,5060 C473,5105 370,5140 300,5170 C230,5200 178,5202 140,5240 C102,5278 84,5337 72,5400 C60,5463 75,5555 70,5620 C65,5685 48,5733 40,5790 C32,5847 26,5900 24,5960 C22,6020 30,6092 30,6150 C30,6208 19,6270 26,6310 C33,6350 31,6376 70,6392 C109,6408 182,6404 260,6408 C338,6412 457,6407 540,6414 C623,6421 717,6418 760,6452 C803,6486 791,6562 800,6620 C809,6678 815,6743 812,6800 C809,6857 799,6917 780,6960 C761,7003 680,7028 700,7060 C720,7092 840,7120 900,7150 C960,7180 1025,7215 1060,7240 C1095,7265 1102,7290 1110,7300" stroke="url(#yp-tr)" stroke-width="1.2" opacity=".72"/>
-  <path class="ln" data-line="b" d="M1010,465 C1009,486 1017,548 1005,590 C993,632 966,677 940,720 C914,763 907,812 850,850 C793,888 692,927 600,950 C508,973 385,962 300,990 C215,1018 129,1052 90,1120 C51,1188 64,1303 64,1400 C64,1497 63,1620 92,1700 C121,1780 175,1837 240,1880 C305,1923 405,1933 480,1960 C555,1987 653,2000 690,2040 C727,2080 694,2143 700,2200 C706,2257 692,2330 725,2380 C758,2430 821,2463 900,2500 C979,2537 1118,2557 1200,2600 C1282,2643 1359,2700 1390,2760 C1421,2820 1408,2902 1385,2960 C1362,3018 1321,3070 1250,3110 C1179,3150 1048,3170 960,3200 C872,3230 765,3248 720,3290 C675,3332 717,3392 690,3450 C663,3508 620,3577 560,3640 C500,3703 398,3772 330,3830 C262,3888 150,3928 150,3990 C150,4052 255,4135 330,4200 C405,4265 522,4320 600,4380 C678,4440 760,4507 800,4560 C840,4613 813,4662 840,4700 C867,4738 903,4757 960,4790 C1017,4823 1109,4855 1180,4900 C1251,4945 1350,4995 1385,5060 C1420,5125 1406,5225 1390,5290 C1374,5355 1323,5400 1290,5450 C1257,5500 1190,5545 1190,5590 C1190,5635 1257,5677 1290,5720 C1323,5763 1371,5790 1388,5850 C1405,5910 1393,6000 1392,6080 C1391,6160 1388,6260 1380,6330 C1372,6400 1344,6438 1345,6500 C1346,6562 1392,6630 1385,6700 C1378,6770 1334,6857 1300,6920 C1266,6983 1207,7033 1180,7080 C1153,7127 1152,7163 1140,7200 C1128,7237 1115,7283 1110,7300" stroke="url(#yp-tr)" stroke-width=".8" opacity=".5"/>
+  <path class="ln" data-line="a" d="M1110,600 C1100,617 1082,668 1050,700 C1018,732 972,762 920,790 C868,818 783,837 740,870 C697,903 645,948 660,990 C675,1032 763,1070 830,1120 C897,1170 988,1230 1060,1290 C1132,1350 1206,1413 1260,1480 C1314,1547 1363,1620 1385,1690 C1407,1760 1390,1823 1392,1900 C1394,1977 1403,2067 1395,2150 C1387,2233 1391,2332 1345,2400 C1299,2468 1211,2517 1120,2560 C1029,2603 907,2630 800,2660 C693,2690 578,2717 480,2740 C382,2763 276,2770 210,2800 C144,2830 107,2870 84,2920 C61,2970 68,3037 70,3100 C72,3163 94,3237 96,3300 C98,3363 67,3423 84,3480 C101,3537 127,3593 200,3640 C273,3687 403,3728 520,3760 C637,3792 783,3813 900,3830 C1017,3847 1137,3835 1220,3860 C1303,3885 1372,3932 1400,3980 C1428,4028 1386,4080 1385,4150 C1384,4220 1406,4315 1392,4400 C1378,4485 1359,4598 1300,4660 C1241,4722 1120,4730 1040,4770 C960,4810 900,4852 820,4900 C740,4948 647,5015 560,5060 C473,5105 370,5140 300,5170 C230,5200 178,5202 140,5240 C102,5278 84,5337 72,5400 C60,5463 75,5555 70,5620 C65,5685 48,5733 40,5790 C32,5847 26,5900 24,5960 C22,6020 30,6092 30,6150 C30,6208 19,6270 26,6310 C33,6350 31,6376 70,6392 C109,6408 182,6404 260,6408 C338,6412 457,6407 540,6414 C623,6421 717,6418 760,6452 C803,6486 791,6562 800,6620 C809,6678 815,6743 812,6800 C809,6857 799,6917 780,6960 C761,7003 680,7028 700,7060 C720,7092 840,7120 900,7150 C960,7180 1025,7215 1060,7240 C1095,7265 1102,7290 1110,7300" stroke="url(#yp-tr)" stroke-width="1.2" opacity=".72"/>
+  <path class="ln" data-line="b" d="M1110,600 C1117,617 1155,667 1150,700 C1145,733 1125,772 1080,800 C1035,828 960,845 880,870 C800,895 697,930 600,950 C503,970 385,962 300,990 C215,1018 129,1052 90,1120 C51,1188 64,1303 64,1400 C64,1497 63,1620 92,1700 C121,1780 175,1837 240,1880 C305,1923 405,1933 480,1960 C555,1987 653,2000 690,2040 C727,2080 694,2143 700,2200 C706,2257 692,2330 725,2380 C758,2430 821,2463 900,2500 C979,2537 1118,2557 1200,2600 C1282,2643 1359,2700 1390,2760 C1421,2820 1408,2902 1385,2960 C1362,3018 1321,3070 1250,3110 C1179,3150 1048,3170 960,3200 C872,3230 765,3248 720,3290 C675,3332 717,3392 690,3450 C663,3508 620,3577 560,3640 C500,3703 398,3772 330,3830 C262,3888 150,3928 150,3990 C150,4052 255,4135 330,4200 C405,4265 522,4320 600,4380 C678,4440 760,4507 800,4560 C840,4613 813,4662 840,4700 C867,4738 903,4757 960,4790 C1017,4823 1109,4855 1180,4900 C1251,4945 1350,4995 1385,5060 C1420,5125 1406,5225 1390,5290 C1374,5355 1323,5400 1290,5450 C1257,5500 1190,5545 1190,5590 C1190,5635 1257,5677 1290,5720 C1323,5763 1371,5790 1388,5850 C1405,5910 1393,6000 1392,6080 C1391,6160 1388,6260 1380,6330 C1372,6400 1344,6438 1345,6500 C1346,6562 1392,6630 1385,6700 C1378,6770 1334,6857 1300,6920 C1266,6983 1207,7033 1180,7080 C1153,7127 1152,7163 1140,7200 C1128,7237 1115,7283 1110,7300" stroke="url(#yp-tr)" stroke-width=".8" opacity=".5"/>
   <g class="dots" fill="url(#yp-tr)">
-    <circle class="pt" data-line="a" cx="955" cy="592" r="3"/><circle class="pt" data-line="a" cx="660" cy="854" r="2"/><circle class="pt" data-line="a" cx="837" cy="1111" r="2.5"/><circle class="pt" data-line="a" cx="1268" cy="1469" r="2"/><circle class="pt" data-line="a" cx="1383" cy="1890" r="3"/><circle class="pt" data-line="a" cx="1348" cy="2390" r="2"/><circle class="pt" data-line="a" cx="792" cy="2665" r="3"/><circle class="pt" data-line="a" cx="201" cy="2806" r="2"/><circle class="pt" data-line="a" cx="67" cy="3108" r="2"/><circle class="pt" data-line="a" cx="92" cy="3486" r="3"/><circle class="pt" data-line="a" cx="511" cy="3755" r="2"/><circle class="pt" data-line="a" cx="1227" cy="3852" r="2.5"/><circle class="pt" data-line="a" cx="1388" cy="4142" r="2"/><circle class="pt" data-line="a" cx="1308" cy="4657" r="2"/><circle class="pt" data-line="a" cx="813" cy="4906" r="2"/><circle class="pt" data-line="a" cx="301" cy="5161" r="2"/><circle class="pt" data-line="a" cx="80" cy="5389" r="2"/><circle class="pt" data-line="a" cx="45" cy="5799" r="3"/><circle class="pt" data-line="a" cx="30" cy="6152" r="3"/><circle class="pt" data-line="a" cx="71" cy="6389" r="2"/><circle class="pt" data-line="a" cx="535" cy="6424" r="2"/><circle class="pt" data-line="a" cx="792" cy="6626" r="2.5"/><circle class="pt" data-line="a" cx="786" cy="6963" r="2.5"/><circle class="pt" data-line="a" cx="904" cy="7147" r="2"/>
+    <circle class="pt" data-line="a" cx="1050" cy="692" r="3"/><circle class="pt" data-line="a" cx="750" cy="859" r="2"/><circle class="pt" data-line="a" cx="837" cy="1111" r="2.5"/><circle class="pt" data-line="a" cx="1268" cy="1469" r="2"/><circle class="pt" data-line="a" cx="1383" cy="1890" r="3"/><circle class="pt" data-line="a" cx="1348" cy="2390" r="2"/><circle class="pt" data-line="a" cx="792" cy="2665" r="3"/><circle class="pt" data-line="a" cx="201" cy="2806" r="2"/><circle class="pt" data-line="a" cx="67" cy="3108" r="2"/><circle class="pt" data-line="a" cx="92" cy="3486" r="3"/><circle class="pt" data-line="a" cx="511" cy="3755" r="2"/><circle class="pt" data-line="a" cx="1227" cy="3852" r="2.5"/><circle class="pt" data-line="a" cx="1388" cy="4142" r="2"/><circle class="pt" data-line="a" cx="1308" cy="4657" r="2"/><circle class="pt" data-line="a" cx="813" cy="4906" r="2"/><circle class="pt" data-line="a" cx="301" cy="5161" r="2"/><circle class="pt" data-line="a" cx="80" cy="5389" r="2"/><circle class="pt" data-line="a" cx="45" cy="5799" r="3"/><circle class="pt" data-line="a" cx="30" cy="6152" r="3"/><circle class="pt" data-line="a" cx="71" cy="6389" r="2"/><circle class="pt" data-line="a" cx="535" cy="6424" r="2"/><circle class="pt" data-line="a" cx="792" cy="6626" r="2.5"/><circle class="pt" data-line="a" cx="786" cy="6963" r="2.5"/><circle class="pt" data-line="a" cx="904" cy="7147" r="2"/>
   </g>
   <g class="rings" stroke="url(#yp-tr)" stroke-width="1">
-    <circle class="pt" data-line="b" cx="935" cy="728" r="6"/><circle class="pt" data-line="b" cx="61" cy="1402" r="5"/><circle class="pt" data-line="b" cx="707" cy="2205" r="5"/><circle class="pt" data-line="b" cx="1379" cy="2962" r="6"/><circle class="pt" data-line="b" cx="563" cy="3647" r="6"/><circle class="pt" data-line="b" cx="794" cy="4554" r="6"/><circle class="pt" data-line="b" cx="1397" cy="5284" r="5"/><circle class="pt" data-line="b" cx="1393" cy="6086" r="6"/><circle class="pt" data-line="b" cx="1184" cy="7083" r="5"/>
+    <circle class="pt" data-line="b" cx="1075" cy="808" r="6"/><circle class="pt" data-line="b" cx="61" cy="1402" r="5"/><circle class="pt" data-line="b" cx="707" cy="2205" r="5"/><circle class="pt" data-line="b" cx="1379" cy="2962" r="6"/><circle class="pt" data-line="b" cx="563" cy="3647" r="6"/><circle class="pt" data-line="b" cx="794" cy="4554" r="6"/><circle class="pt" data-line="b" cx="1397" cy="5284" r="5"/><circle class="pt" data-line="b" cx="1393" cy="6086" r="6"/><circle class="pt" data-line="b" cx="1184" cy="7083" r="5"/>
   </g>
-  <circle class="tip halo" data-line="a" r="11" fill="url(#yp-tr)"/><circle class="tip" data-line="a" r="3.2" fill="url(#yp-tr)"/><circle class="tip halo" data-line="b" r="8" fill="url(#yp-tr)"/><circle class="tip" data-line="b" r="2.4" fill="url(#yp-tr)"/>
 </svg>
+
 </div>
 </div>
 <!-- スマホ（幅768px未満）：390pxのカンプを画面幅に合わせて表示 -->
@@ -348,16 +336,13 @@
 
 <!-- 01 FV -->
 <section class="sec" data-sec="fv" data-tone="dark" style="height: 720px; background: #0B2C24; color: #fff">
-  <img decoding="async" src="assets/hero.jpg" alt="白い花のやわらかな光" style="position: absolute; left: -272px; top: -44px; width: 760px; height: auto">
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,44,36,.74) 0%, rgba(9,44,36,.12) 15%, rgba(9,44,36,0) 36%, rgba(9,44,36,.9) 57%, #0B2C24 70%)"></div>
-  <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,44,36,.6) 0%, rgba(9,44,36,0) 46%)"></div>
+  <div class="haze" style="left: -20px; top: 40px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(126,176,150,.24), rgba(126,176,150,0))"></div>
+  <div class="ink" style="position: absolute; left: -145px; top: 78px; width: 640px; height: 322px; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 26%, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 26%, #000 78%, transparent 100%)"><img decoding="async" src="assets/fv-calligraphy.webp" alt="風が舞うような墨の書" style="display: block; width: 640px; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 22%, #000 40%); mask-image: linear-gradient(90deg, transparent 0, transparent 22%, #000 40%)"></div>
 
   <header class="fg" style="position: absolute; left: 0; top: 0; width: 390px; height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 24px">
     <a href="#"><img decoding="async" src="assets/logo.png" alt="山本香料株式会社" style="display: block; height: 20px; filter: brightness(0) invert(1)"></a>
     <button type="button" data-menu-open aria-label="メニューを開く" aria-expanded="false" aria-controls="spmenu" style="width: 48px; height: 48px; padding: 0; border: 0; background: none; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px"><span style="display: block; width: 26px; height: 1px; background: currentColor"></span><span style="display: block; width: 26px; height: 1px; background: currentColor"></span></button>
   </header>
-
-  <div class="en" aria-hidden="true" style="position: absolute; right: 22px; top: 82px; font-size: 27px; line-height: 1.05; letter-spacing: .08em; text-align: right; text-transform: uppercase; color: rgba(255,255,255,.24)">Sensory<br>Experience</div>
 
   <div class="fg en" aria-label="香りのノート表示（スクロールに合わせて移る）" style="position: absolute; left: 9px; top: 118px; display: flex; flex-direction: column; align-items: center; gap: 9px; font-size: 10px; letter-spacing: .3em">
     <span style="writing-mode: vertical-rl">TOP NOTE</span>
@@ -368,15 +353,10 @@
     <span style="writing-mode: vertical-rl; opacity: .55">LAST</span>
   </div>
 
-  <div style="position: absolute; left: 268px; top: 244px; width: 98px; height: 132px; border-radius: 49px 49px 0 0; overflow: hidden; border: 3px solid rgba(246,242,233,.6); z-index: 4">
-    <img decoding="async" class="ph" src="assets/lavender.jpg" alt="ラベンダー">
-  </div>
-
   <div class="fg" style="position: absolute; left: 24px; top: 400px">
     <div style="display: flex; align-items: center; gap: 14px">
       <span class="en" style="font-size: 12px; letter-spacing: .3em">THE WORLD OF SCENT</span>
       <span style="width: 32px; height: 1px; background: rgba(255,255,255,.5)"></span>
-      <span class="en" style="font-size: 12px; letter-spacing: .24em">01 — 05</span>
     </div>
     <h1 style="margin-top: 18px; font-size: 60px; line-height: 1.3; letter-spacing: .08em; white-space: nowrap">香りを<br>かたちに。</h1>
     <p style="margin-top: 18px; font-size: 14px; line-height: 2.1; letter-spacing: .14em; white-space: nowrap">見えないのに、心を動かすもの。<br>その一瞬を、香りの力で生み出していく。</p>
@@ -400,9 +380,9 @@
     <a class="more" href="#" style="margin-top: 28px">私たちについて<span class="ar"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></span></a>
   </div>
   <div style="position: relative; height: 422px; margin-top: 48px">
-    <div class="cut" style="top: 0"><img decoding="async" class="ph" src="assets/citrus.jpg" alt="みずみずしい柑橘の断面"></div>
-    <div class="cut" style="top: 130px"><img decoding="async" class="ph" src="assets/oil.jpg" alt="瓶に落ちる精油の一滴" style="width: 122%; max-width: none; margin-left: -6%"></div>
-    <div class="cut" style="top: 260px"><img decoding="async" class="ph" src="assets/perfume.jpg" alt="香粧品をイメージした香水瓶"></div>
+    <div class="cut" style="top: 0"><img decoding="async" class="ph" src="assets/about-fresh.jpg" alt="枝に実る柚子" style="object-position: 50% 42%"></div>
+    <div class="cut" style="top: 130px"><img decoding="async" class="ph" src="assets/about-essence.jpg" alt="精油の瓶とバスソルト"></div>
+    <div class="cut" style="top: 260px"><img decoding="async" class="ph" src="assets/cat-ceramide.jpg" alt="化粧品の瓶が並ぶ洗面台" style="object-position: 60% 50%"></div>
     <div class="tag" style="top: 86px"><span class="en" style="font-size: 12px; letter-spacing: .26em">FRESH</span><span style="font-size: 11px; letter-spacing: .12em">フレッシュ</span></div>
     <div class="tag" style="top: 216px"><span class="en" style="font-size: 12px; letter-spacing: .26em">ESSENCE</span><span style="font-size: 11px; letter-spacing: .12em">精油</span></div>
     <div class="tag" style="top: 346px"><span class="en" style="font-size: 12px; letter-spacing: .26em">BEAUTY</span><span style="font-size: 11px; letter-spacing: .12em">香粧品</span></div>
@@ -420,8 +400,7 @@
   </div>
 
   <article style="position: relative; margin-top: 32px">
-    <div style="height: 204px; overflow: hidden"><img decoding="async" class="ph" src="assets/life-sticker.jpg" alt="マスクにアロマシールを貼る手元" style="object-position: 50% 62%"></div>
-    <img decoding="async" src="assets/pkg-sticker.jpg" alt="マスクに貼るアロマ 4種のパッケージ" style="position: absolute; z-index: 7; right: 14px; top: 150px; width: 142px; height: 80px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 12px 28px rgba(27,42,37,.16)">
+    <div style="height: 204px; overflow: hidden"><img decoding="async" class="ph" src="assets/pkg-sticker.jpg" alt="マスクに貼るアロマ 4種のパッケージとシール"></div>
     <div class="fg" style="padding: 30px 20px 24px; background: #fff">
       <div style="display: flex; align-items: flex-end; justify-content: space-between">
         <div><div class="en" style="font-size: 12px; letter-spacing: .26em; color: #6A5BA8">01 / AROMA STICKER</div><h3 style="margin-top: 10px; font-size: 21px; letter-spacing: .08em">マスクに貼るアロマ</h3></div>
@@ -432,8 +411,7 @@
   </article>
 
   <article style="position: relative; margin-top: 20px">
-    <div style="height: 204px; overflow: hidden"><img decoding="async" class="ph" src="assets/life-spray.jpg" alt="マスクにアロマスプレーを吹きかける手元" style="object-position: 50% 50%"></div>
-    <img decoding="async" src="assets/pkg-spray.jpg" alt="マスクに吹くアロマ 6種のボトル" style="position: absolute; z-index: 7; right: 14px; top: 150px; width: 142px; height: 80px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 12px 28px rgba(27,42,37,.16)">
+    <div style="height: 204px; overflow: hidden"><img decoding="async" class="ph" src="assets/pkg-spray.jpg" alt="マスクに吹くアロマ 6種のボトル"></div>
     <div class="fg" style="padding: 30px 20px 24px; background: #fff">
       <div style="display: flex; align-items: flex-end; justify-content: space-between">
         <div><div class="en" style="font-size: 12px; letter-spacing: .26em; color: #6A5BA8">02 / AROMA SPRAY</div><h3 style="margin-top: 10px; font-size: 21px; letter-spacing: .08em">マスクに吹くアロマ</h3></div>
@@ -442,7 +420,6 @@
       <p class="go" style="margin-top: 14px; font-size: 13px; line-height: 1.85; letter-spacing: .04em; color: #3D4D47">スリムボトルで携帯しやすい、<br>マスク用スプレー。全6種・25ml入り。</p>
     </div>
   </article>
-  <p class="go fg" style="margin-top: 16px; font-size: 11px; line-height: 1.7; letter-spacing: .04em; color: #5C6B65">※パッケージ写真は山本香料株式会社の現行公式サイト掲載素材を使用しています。</p>
 </section>
 
 <!-- 04 FRAGRANCE LINEUP -->
@@ -458,31 +435,31 @@
 
   <div class="swipe" style="margin-top: 36px">
     <a href="#" style="display: block; flex: none; width: 150px">
-      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/lavender.jpg" alt="ラベンダー"></div>
+      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-natural.jpg" alt="かすみ草と精油のボトル" style="object-position: 42% 50%"></div>
       <div class="fg en" style="margin-top: 14px; font-size: 14px; letter-spacing: .1em; color: #CFC6F2">01</div>
       <div class="fg" style="margin-top: 2px; font-size: 16px; letter-spacing: .08em; white-space: nowrap">天然精油</div>
       <div class="fg en" style="margin-top: 2px; font-size: 13px; font-style: italic; letter-spacing: .04em; color: rgba(255,255,255,.7)">Natural Essential Oil</div>
     </a>
     <a href="#" style="display: block; flex: none; width: 150px">
-      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/flower.jpg" alt="白い花"></div>
+      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-organic.jpg" alt="精油を保管する褐色の瓶" style="object-position: 40% 50%"></div>
       <div class="fg en" style="margin-top: 14px; font-size: 14px; letter-spacing: .1em; color: #CFC6F2">02</div>
       <div class="fg" style="margin-top: 2px; font-size: 16px; letter-spacing: .08em; white-space: nowrap">オーガニック精油</div>
       <div class="fg en" style="margin-top: 2px; font-size: 13px; font-style: italic; letter-spacing: .04em; color: rgba(255,255,255,.7)">Organic Essential Oil</div>
     </a>
     <a href="#" style="display: block; flex: none; width: 150px">
-      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/perfume.jpg" alt="香水瓶"></div>
+      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-fragrance.jpg" alt="バラの花" style="object-position: 30% 50%"></div>
       <div class="fg en" style="margin-top: 14px; font-size: 14px; letter-spacing: .1em; color: #CFC6F2">03</div>
       <div class="fg" style="margin-top: 2px; font-size: 16px; letter-spacing: .08em; white-space: nowrap">香粧品香料</div>
       <div class="fg en" style="margin-top: 2px; font-size: 13px; font-style: italic; letter-spacing: .04em; color: rgba(255,255,255,.7)">Cosmetic Fragrance</div>
     </a>
     <a href="#" style="display: block; flex: none; width: 150px">
-      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/citrus.jpg" alt="柑橘"></div>
+      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-flavor.jpg" alt="葉と精油を並べた卓上" style="object-position: 46% 50%"></div>
       <div class="fg en" style="margin-top: 14px; font-size: 14px; letter-spacing: .1em; color: #CFC6F2">04</div>
       <div class="fg" style="margin-top: 2px; font-size: 16px; letter-spacing: .08em; white-space: nowrap">食品香料</div>
       <div class="fg en" style="margin-top: 2px; font-size: 13px; font-style: italic; letter-spacing: .04em; color: rgba(255,255,255,.7)">Food Flavor</div>
     </a>
     <a href="#" style="display: block; flex: none; width: 150px">
-      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/diffuser.jpg" alt="ガラス瓶とスティック"></div>
+      <div style="height: 204px; border-radius: 75px 75px 0 0; overflow: hidden"><img decoding="async" class="ph" src="assets/cat-other.jpg" alt="白いボトルとタオル" style="object-position: 58% 50%"></div>
       <div class="fg en" style="margin-top: 14px; font-size: 14px; letter-spacing: .1em; color: #CFC6F2">05</div>
       <div class="fg" style="margin-top: 2px; font-size: 16px; letter-spacing: .08em; white-space: nowrap">セラミド・その他</div>
       <div class="fg en" style="margin-top: 2px; font-size: 13px; font-style: italic; letter-spacing: .04em; color: rgba(255,255,255,.7)">Ceramide &amp; Others</div>
@@ -498,7 +475,7 @@
 <!-- 05 TECHNOLOGY -->
 <section class="sec" data-sec="technology" data-tone="light" style="padding-bottom: 56px; background: #F6F2E9">
   <div class="haze" style="left: 140px; top: 360px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(170,152,226,.2), rgba(170,152,226,0))"></div>
-  <div class="fg" style="height: 290px; overflow: hidden"><img decoding="async" class="ph" src="assets/researcher.jpg" alt="香りを確かめる研究者" style="object-position: 58% 30%"></div>
+  <div class="fg" style="height: 290px; overflow: hidden"><img decoding="async" class="ph" src="assets/perfumer.jpg" alt="原料の香りを確かめる社員" style="object-position: 22% 50%"></div>
   <div class="fg pad" style="padding-top: 40px">
     <div class="head"><span class="label">Technology</span><span class="rule"></span><span class="num">05</span></div>
     <h2 class="h2">感性を、<br>確かな技術に。</h2>
@@ -506,9 +483,9 @@
     <a class="more" href="#" style="margin-top: 22px">技術・事業紹介<span class="ar"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></span></a>
   </div>
   <div class="fg pad" style="margin-top: 36px">
-    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/bottles.jpg" alt="調香に使う香料の瓶"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">01</span><span style="font-size: 17px; letter-spacing: .12em">研究・開発</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
-    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/lab.jpg" alt="香料を充填する設備"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">02</span><span style="font-size: 17px; letter-spacing: .12em">製造・生産</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
-    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2); border-bottom: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/perfumer.jpg" alt="原料の香りを確かめる社員" style="object-position: 30% 40%"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">03</span><span style="font-size: 17px; letter-spacing: .12em">品質管理</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
+    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-research.jpg" alt="処方を書き留めるペンと資料"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">01</span><span style="font-size: 17px; letter-spacing: .12em">研究・開発</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
+    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-factory.jpg" alt="柏原工場のエアシャワー" style="object-position: 50% 30%"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">02</span><span style="font-size: 17px; letter-spacing: .12em">製造・生産</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
+    <a href="#" style="display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(27,42,37,.2); border-bottom: 1px solid rgba(27,42,37,.2)"><span style="display: block; flex: none; width: 112px; height: 74px; overflow: hidden"><img decoding="async" class="ph" src="assets/tech-quality.jpg" alt="分析機器を扱う研究所の社員" style="object-position: 50% 24%"></span><span class="en" style="font-size: 16px; letter-spacing: .1em; color: #6A5BA8">03</span><span style="font-size: 17px; letter-spacing: .12em">品質管理</span><svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true" style="margin-left: auto"><path d="M0 5h17M13 1l4 4-4 4" stroke="currentColor" stroke-width="1"/></svg></a>
   </div>
 </section>
 
@@ -559,8 +536,8 @@
 
 <!-- 09 CONTACT -->
 <section class="sec" data-sec="contact" data-tone="dark" style="height: 590px; background: #0B2C24; color: #fff">
-  <img decoding="async" src="assets/hero.jpg" alt="白い花" style="position: absolute; left: -366px; top: -196px; width: 900px; height: auto">
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,44,36,.72) 0%, rgba(9,44,36,.26) 14%, rgba(9,44,36,.3) 27%, rgba(9,44,36,.92) 40%, #0B2C24 52%)"></div>
+  <div class="haze" style="left: -60px; top: -120px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(126,176,150,.22), rgba(126,176,150,0))"></div>
+  <div class="ink" style="position: absolute; left: -160px; top: -18px; width: 640px; height: 322px; opacity: .6; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 24%, #000 56%, transparent 82%); mask-image: linear-gradient(180deg, transparent 0, #000 24%, #000 56%, transparent 82%)"><img decoding="async" src="assets/fv-calligraphy.webp" alt="" style="display: block; width: 640px; height: auto"></div>
   <div class="fg pad" style="position: absolute; left: 0; right: 0; bottom: 44px">
     <div class="head"><span class="label" style="color: #CFC6F2">Contact</span><span class="rule"></span><span class="num">09</span></div>
     <h2 style="margin-top: 18px; font-size: 38px; line-height: 1.5; letter-spacing: .08em; white-space: nowrap">まだない香りを、<br>一緒に。</h2>
@@ -587,16 +564,15 @@
   </div>
 </footer>
 
-<svg class="trail" aria-hidden="true" width="390" height="7834" viewBox="0 0 390 7834" fill="none" style="position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none">
-  <defs><linearGradient id="sp-tr" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="7834"><stop offset="0.0000" stop-color="#ffffff"/><stop offset="0.0919" stop-color="#ffffff"/><stop offset="0.0919" stop-color="#7C9E8B"/><stop offset="0.3896" stop-color="#8E86BE"/><stop offset="0.3896" stop-color="#E2DBFA"/><stop offset="0.4883" stop-color="#E2DBFA"/><stop offset="0.4883" stop-color="#8E86BE"/><stop offset="0.7017" stop-color="#7C9E8B"/><stop offset="0.7017" stop-color="#ffffff"/><stop offset="0.7566" stop-color="#ffffff"/><stop offset="0.7566" stop-color="#7C9E8B"/><stop offset="0.8702" stop-color="#8E86BE"/><stop offset="0.8702" stop-color="#ffffff"/><stop offset="1.0000" stop-color="#ffffff"/></linearGradient></defs>
-  <path class="ln" data-line="a" d="M238,262 C237,272 231,298 232,322 C233,346 233,380 244,404 C255,428 280,445 300,468 C320,491 351,515 364,540 C377,565 375,593 378,620 C381,647 380,670 380,700 C380,730 378,757 378,800 C378,843 381,907 381,960 C381,1013 376,1065 376,1120 C376,1175 387,1250 380,1290 C373,1330 358,1337 332,1362 C306,1387 259,1407 222,1440 C185,1473 142,1518 112,1560 C82,1602 57,1652 42,1690 C27,1728 27,1760 22,1790 C17,1820 13,1832 12,1870 C11,1908 15,1973 15,2020 C15,2067 1,2118 10,2150 C19,2182 40,2195 70,2214 C100,2233 150,2244 190,2264 C230,2284 281,2307 312,2332 C343,2357 366,2384 377,2412 C388,2440 382,2475 381,2500 C380,2525 390,2541 373,2560 C356,2579 319,2591 282,2612 C245,2633 190,2662 150,2686 C110,2710 65,2730 42,2756 C19,2782 16,2806 12,2840 C8,2874 15,2920 15,2960 C15,3000 10,3032 10,3080 C10,3128 15,3193 15,3250 C15,3307 -1,3380 10,3420 C21,3460 47,3471 80,3492 C113,3513 168,3527 210,3545 C252,3563 301,3577 330,3600 C359,3623 374,3652 382,3684 C390,3716 379,3754 379,3790 C379,3826 383,3848 383,3900 C383,3952 379,4042 379,4100 C379,4158 382,4197 382,4250 C382,4303 378,4362 378,4420 C378,4478 382,4540 382,4600 C382,4660 378,4735 378,4780 C378,4825 389,4847 381,4872 C373,4897 362,4910 332,4930 C302,4950 243,4970 200,4990 C157,5010 103,5030 72,5050 C41,5070 25,5079 15,5112 C5,5145 11,5202 11,5250 C11,5298 15,5358 15,5400 C15,5442 11,5467 11,5500 C11,5533 14,5550 14,5600 C14,5650 10,5747 10,5800 C10,5853 13,5878 13,5920 C13,5962 11,5995 11,6050 C11,6105 15,6197 15,6250 C15,6303 3,6342 11,6370 C19,6398 30,6409 62,6420 C94,6431 154,6430 200,6434 C246,6438 308,6433 338,6444 C368,6455 374,6466 381,6500 C388,6534 377,6602 377,6650 C377,6698 382,6757 381,6790 C380,6823 378,6831 372,6850 C366,6869 355,6888 342,6905 C329,6922 311,6938 294,6950 C277,6962 249,6972 240,6976" stroke="url(#sp-tr)" stroke-width="1.1" opacity=".78"/>
-  <path class="wisp" d="M238,262 C233,268 222,288 210,298 C198,308 181,315 166,324 C151,333 134,342 122,352 C110,362 100,379 96,384" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
+<svg class="trail" aria-hidden="true" width="390" height="7781" viewBox="0 0 390 7781" fill="none" style="position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none">
+  <defs><linearGradient id="sp-tr" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="7781"><stop offset="0.0000" stop-color="#ffffff"/><stop offset="0.0925" stop-color="#ffffff"/><stop offset="0.0925" stop-color="#7C9E8B"/><stop offset="0.3853" stop-color="#8E86BE"/><stop offset="0.3853" stop-color="#E2DBFA"/><stop offset="0.4848" stop-color="#E2DBFA"/><stop offset="0.4848" stop-color="#8E86BE"/><stop offset="0.6997" stop-color="#7C9E8B"/><stop offset="0.6997" stop-color="#ffffff"/><stop offset="0.7549" stop-color="#ffffff"/><stop offset="0.7549" stop-color="#7C9E8B"/><stop offset="0.8692" stop-color="#8E86BE"/><stop offset="0.8692" stop-color="#ffffff"/><stop offset="1.0000" stop-color="#ffffff"/></linearGradient></defs>
+  <path class="ln" data-line="a" d="M255,255 C251,266 234,297 232,322 C230,347 233,380 244,404 C255,428 280,445 300,468 C320,491 351,515 364,540 C377,565 375,593 378,620 C381,647 380,670 380,700 C380,730 378,757 378,800 C378,843 381,907 381,960 C381,1013 376,1065 376,1120 C376,1175 387,1250 380,1290 C373,1330 358,1337 332,1362 C306,1387 259,1407 222,1440 C185,1473 142,1518 112,1560 C82,1602 57,1652 42,1690 C27,1728 27,1760 22,1790 C17,1820 13,1832 12,1870 C11,1908 15,1973 15,2020 C15,2067 1,2118 10,2150 C19,2182 40,2195 70,2214 C100,2233 150,2244 190,2264 C230,2284 281,2307 312,2332 C343,2357 366,2384 377,2412 C388,2440 382,2475 381,2500 C380,2525 390,2541 373,2560 C356,2579 319,2591 282,2612 C245,2633 190,2662 150,2686 C110,2710 65,2730 42,2756 C19,2782 16,2806 12,2840 C8,2874 15,2929 15,2960 C15,2991 10,2987 10,3026 C10,3065 15,3139 15,3196 C15,3253 -1,3326 10,3366 C21,3406 47,3417 80,3438 C113,3459 168,3473 210,3491 C252,3509 301,3523 330,3546 C359,3569 374,3598 382,3630 C390,3662 379,3700 379,3736 C379,3772 383,3794 383,3846 C383,3898 379,3988 379,4046 C379,4104 382,4143 382,4196 C382,4249 378,4308 378,4366 C378,4424 382,4486 382,4546 C382,4606 378,4681 378,4726 C378,4771 389,4793 381,4818 C373,4843 362,4856 332,4876 C302,4896 243,4916 200,4936 C157,4956 103,4976 72,4996 C41,5016 25,5025 15,5058 C5,5091 11,5148 11,5196 C11,5244 15,5304 15,5346 C15,5388 11,5413 11,5446 C11,5479 14,5496 14,5546 C14,5596 10,5693 10,5746 C10,5799 13,5824 13,5866 C13,5908 11,5941 11,5996 C11,6051 15,6143 15,6196 C15,6249 3,6288 11,6316 C19,6344 30,6355 62,6366 C94,6377 154,6376 200,6380 C246,6384 308,6379 338,6390 C368,6401 374,6412 381,6446 C388,6480 377,6548 377,6596 C377,6644 382,6703 381,6736 C380,6769 378,6777 372,6796 C366,6815 355,6834 342,6851 C329,6868 311,6884 294,6896 C277,6908 249,6918 240,6922" stroke="url(#sp-tr)" stroke-width="1.1" opacity=".78"/>
+  <path class="wisp" d="M255,255 C248,262 225,286 210,298 C195,310 181,315 166,324 C151,333 134,342 122,352 C110,362 100,379 96,384" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
   <path class="wisp" d="M40,1380 C58,1395 110,1440 150,1470 C190,1500 245,1522 280,1560 C315,1598 347,1677 360,1700" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
-  <path class="wisp" d="M20,3600 C37,3587 82,3537 120,3520 C158,3503 205,3508 250,3500 C295,3492 365,3475 388,3470" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
-  <path class="wisp" d="M240,6976 C232,6971 209,6951 190,6944 C171,6937 146,6944 124,6936 C102,6928 71,6903 60,6896" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
-  <g fill="url(#sp-tr)"><circle class="pt" data-line="a" cx="232" cy="322" r="2"/><circle class="pt" data-line="a" cx="300" cy="468" r="2.2"/><circle class="pt" data-line="a" cx="380" cy="700" r="2"/><circle class="pt" data-line="a" cx="380" cy="1290" r="2.2"/><circle class="pt" data-line="a" cx="112" cy="1560" r="2.5"/><circle class="pt" data-line="a" cx="22" cy="1790" r="2"/><circle class="pt" data-line="a" cx="10" cy="2150" r="2"/><circle class="pt" data-line="a" cx="312" cy="2332" r="2.2"/><circle class="pt" data-line="a" cx="150" cy="2686" r="2"/><circle class="pt" data-line="a" cx="10" cy="3420" r="2.2"/><circle class="pt" data-line="a" cx="210" cy="3545" r="2.5"/><circle class="pt" data-line="a" cx="382" cy="3684" r="2"/><circle class="pt" data-line="a" cx="378" cy="4420" r="2"/><circle class="pt" data-line="a" cx="200" cy="4990" r="2.5"/><circle class="pt" data-line="a" cx="11" cy="5250" r="2"/><circle class="pt" data-line="a" cx="200" cy="6434" r="2.2"/><circle class="pt" data-line="a" cx="381" cy="6500" r="2"/><circle class="pt" data-line="a" cx="342" cy="6905" r="2.2"/></g>
-  <g stroke="url(#sp-tr)" stroke-width="1"><circle class="pt" data-line="a" cx="364" cy="540" r="4.5"/><circle class="pt" data-line="a" cx="222" cy="1440" r="5"/><circle class="pt" data-line="a" cx="377" cy="2412" r="4.5"/><circle class="pt" data-line="a" cx="330" cy="3600" r="5"/><circle class="pt" data-line="a" cx="72" cy="5050" r="4.5"/><circle class="pt" data-line="a" cx="62" cy="6420" r="4.5"/><circle class="pt" data-line="a" cx="294" cy="6950" r="5"/></g>
-  <circle class="tip halo" data-line="a" r="8" fill="url(#sp-tr)"/><circle class="tip" data-line="a" r="2.6" fill="url(#sp-tr)"/>
+  <path class="wisp" d="M20,3546 C37,3533 82,3483 120,3466 C158,3449 205,3454 250,3446 C295,3438 365,3421 388,3416" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
+  <path class="wisp" d="M240,6922 C232,6917 209,6897 190,6890 C171,6883 146,6890 124,6882 C102,6874 71,6849 60,6842" stroke="url(#sp-tr)" stroke-width=".8" opacity=".5"/>
+  <g fill="url(#sp-tr)"><circle class="pt" data-line="a" cx="232" cy="322" r="2"/><circle class="pt" data-line="a" cx="300" cy="468" r="2.2"/><circle class="pt" data-line="a" cx="380" cy="700" r="2"/><circle class="pt" data-line="a" cx="380" cy="1290" r="2.2"/><circle class="pt" data-line="a" cx="112" cy="1560" r="2.5"/><circle class="pt" data-line="a" cx="22" cy="1790" r="2"/><circle class="pt" data-line="a" cx="10" cy="2150" r="2"/><circle class="pt" data-line="a" cx="312" cy="2332" r="2.2"/><circle class="pt" data-line="a" cx="150" cy="2686" r="2"/><circle class="pt" data-line="a" cx="10" cy="3366" r="2.2"/><circle class="pt" data-line="a" cx="210" cy="3491" r="2.5"/><circle class="pt" data-line="a" cx="382" cy="3630" r="2"/><circle class="pt" data-line="a" cx="378" cy="4366" r="2"/><circle class="pt" data-line="a" cx="200" cy="4936" r="2.5"/><circle class="pt" data-line="a" cx="11" cy="5196" r="2"/><circle class="pt" data-line="a" cx="200" cy="6380" r="2.2"/><circle class="pt" data-line="a" cx="381" cy="6446" r="2"/><circle class="pt" data-line="a" cx="342" cy="6851" r="2.2"/></g>
+  <g stroke="url(#sp-tr)" stroke-width="1"><circle class="pt" data-line="a" cx="364" cy="540" r="4.5"/><circle class="pt" data-line="a" cx="222" cy="1440" r="5"/><circle class="pt" data-line="a" cx="377" cy="2412" r="4.5"/><circle class="pt" data-line="a" cx="330" cy="3546" r="5"/><circle class="pt" data-line="a" cx="72" cy="4996" r="4.5"/><circle class="pt" data-line="a" cx="62" cy="6366" r="4.5"/><circle class="pt" data-line="a" cx="294" cy="6896" r="5"/></g>
 </svg>
 </div>
 </div>
@@ -625,6 +601,6 @@
     <p class="spmenu-tel">〒541-0057 大阪市中央区北久宝寺町1-3-6<br>TEL 06-6261-5801</p>
   </div>
 </div>
-<script src="demo.js?v=88f1b471"></script>
+<script src="demo.js?v=eaa942f5"></script>
 </body>
 </html>

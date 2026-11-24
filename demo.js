@@ -1,5 +1,5 @@
 /* 山本香料 トップページ デモ ／ 動きの制御
-   01 香りの軌跡（スクロールで線を描く） 02 香りの霞 03 香り立ち（写真）
+   01 香りの軌跡（スクロールに合わせて、霞が晴れるように線が現れる） 02 香りの霞 03 香り立ち（写真）
    04 香りの粒 05 見出しの現れ方 06 香りのノート表示
    スマホは 01 と 02 だけを動かす（演出ガイドの決めごと）。 */
 (function () {
@@ -36,61 +36,21 @@
   }
   function secOf(el) { while (el && !(el.classList && el.classList.contains('sec'))) el = el.parentNode; return el; }
 
-  /* ---------- 01 香りの軌跡 ---------- */
-  function Line(path, lag) {
-    this.el = path; this.len = path.getTotalLength(); this.cur = 0; this.lag = lag || 0; this.curY = -1;
-    var n = Math.max(8, Math.ceil(this.len / 5)), L = new Float32Array(n + 1), Y = new Float32Array(n + 1), m = -1e9;
-    for (var i = 0; i <= n; i++) { var l = this.len * i / n, p = path.getPointAtLength(l); if (p.y > m) m = p.y; L[i] = l; Y[i] = m; }
-    this.n = n; this.L = L; this.Y = Y; this.pts = []; this.tips = [];
-  }
-  Line.prototype.lenAt = function (y) {
-    var Y = this.Y, n = this.n;
-    if (y <= Y[0]) return 0;
-    if (y >= Y[n]) return this.len;
-    var lo = 0, hi = n;
-    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (Y[mid] <= y) lo = mid; else hi = mid; }
-    var t = Y[hi] > Y[lo] ? (y - Y[lo]) / (Y[hi] - Y[lo]) : 0;
-    return this.L[lo] + (this.L[hi] - this.L[lo]) * t;
-  };
-  Line.prototype.yAt = function (len) { return this.Y[clamp(Math.round(len / this.len * this.n), 0, this.n)]; };
-
-  function Trail(svg) {
-    var self = this; this.lines = []; this.wisps = [];
-    q(svg, '.ln').forEach(function (p, i) {
-      var l = new Line(p, i ? 110 : 0), key = p.getAttribute('data-line');
-      l.tips = q(svg, '.tip[data-line="' + key + '"]');
-      l.pts = q(svg, '.pt[data-line="' + key + '"]').map(function (c) { return { el: c, y: parseFloat(c.getAttribute('cy')), on: false }; });
-      if (anim) { p.style.strokeDasharray = l.len + ' ' + l.len; p.style.strokeDashoffset = l.len; }
-      self.lines.push(l);
-    });
-    q(svg, '.wisp').forEach(function (p) {
-      var len = p.getTotalLength(), y0 = p.getPointAtLength(0).y;
-      if (anim) { p.style.strokeDasharray = len + ' ' + len; p.style.strokeDashoffset = len; }
-      self.wisps.push({ el: p, len: len, y: y0, on: false });
-    });
-  }
-  Trail.prototype.update = function (yT, dt) {
-    var moving = false, a = 1 - Math.exp(-dt * 4.4);
-    for (var i = 0; i < this.lines.length; i++) {
-      var l = this.lines[i], target = yT < 0 ? 0 : l.lenAt(yT - l.lag), diff = target - l.cur;
-      if (Math.abs(diff) < .5) l.cur = target; else { l.cur += diff * a; moving = true; }
-      l.el.style.strokeDashoffset = (l.len - l.cur).toFixed(1);
-      l.curY = l.cur > 0 ? l.yAt(l.cur) : -1;
-      var show = l.cur > 2 && l.cur < l.len - 2;
-      if (l.tips.length) {
-        var p = l.el.getPointAtLength(l.cur);
-        for (var t = 0; t < l.tips.length; t++) {
-          var tp = l.tips[t]; tp.setAttribute('cx', p.x.toFixed(1)); tp.setAttribute('cy', p.y.toFixed(1));
-          if (tp.__on !== show) { tp.__on = show; tp.classList.toggle('on', show); }
-        }
-      }
-      for (var j = 0; j < l.pts.length; j++) { var pt = l.pts[j], on = l.curY >= pt.y + 4; if (on !== pt.on) { pt.on = on; pt.el.classList.toggle('on', on); } }
+  /* ---------- 01 香りの軌跡 ----------
+     線の先端を走らせて描くと、生き物が這うように見えてしまう。
+     そこで線は最初から全部そろえておき、画面の下のほうにある「ぼかしの帯」が
+     スクロールに少し遅れてついていくことで、霞が晴れるように上から順に現れる。 */
+  function Reveal(svg, startY) { this.svg = svg; this.cur = startY; this.start = startY; this.band = 360; }
+  Reveal.prototype.update = function (target, dt, band) {
+    var diff = target - this.cur, moving = false;
+    if (diff > .5) {
+      // 追いつく速さ：距離に比例（ゆるやかに減速）＋上限（速いスクロールでも急に出ない）
+      var stepLen = Math.min(diff * (1 - Math.exp(-dt * 2.2)), 1600 * dt);
+      this.cur += Math.max(stepLen, .5); moving = true;
     }
-    var main = this.lines[0];
-    for (var w = 0; w < this.wisps.length; w++) {
-      var ws = this.wisps[w], won = main.cur > 2 && (main.curY >= ws.y - 2 || main.cur >= main.len - 2);
-      if (won !== ws.on) { ws.on = won; ws.el.style.strokeDashoffset = won ? 0 : ws.len; }
-    }
+    if (Math.abs(band - this.band) > .5) this.band = band;
+    this.svg.style.setProperty('--rv', this.cur.toFixed(1) + 'px');
+    this.svg.style.setProperty('--band', this.band.toFixed(0) + 'px');
     return moving;
   };
   function ensureTrail() {
@@ -98,23 +58,25 @@
     if (trails[m] || !anim) return;
     var svg = (m === 'pc' ? pc : sp).querySelector('.trail');
     if (!svg) return;
-    trails[m] = new Trail(svg);
-    if (m === 'pc') makeMotes(trails.pc);
+    trails[m] = new Reveal(svg, m === 'pc' ? 560 : 210);
+    trails[m].update(trails[m].start, 0, S.vh * .42 / S.k);
+    if (m === 'pc') makeMotes(svg);
   }
 
   /* ---------- 04 香りの粒（PCのみ） ---------- */
   function toneAt(y) { var list = secs.pc; for (var i = 0; i < list.length; i++) if (y < list[i].top + list[i].h) return list[i].tone; return 'light'; }
-  function makeMotes(trail) {
+  function makeMotes(svg) {
     var box = d.createElement('div'); box.className = 'motes'; box.setAttribute('aria-hidden', 'true'); pc.appendChild(box);
     var seed = 11; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-    trail.lines.forEach(function (l, li) {
-      var step = li ? 780 : 560;
-      for (var s = 240 + li * 320; s < l.len - 160; s += step) {
-        var p = l.el.getPointAtLength(s), x = clamp(p.x + (rnd() * 2 - 1) * 34, 10, 1430), y = p.y + (rnd() * 2 - 1) * 18, sz = (2 + rnd() * 2.4).toFixed(1);
+    // 粒はぼかした淡い光にして、数はページ全体で十数個に抑える
+    q(svg, '.ln').forEach(function (l, li) {
+      var len = l.getTotalLength(), step = li ? 1500 : 1100;
+      for (var s = 420 + li * 520; s < len - 300; s += step) {
+        var p = l.getPointAtLength(s), x = clamp(p.x + (rnd() * 2 - 1) * 30, 10, 1430), y = p.y + (rnd() * 2 - 1) * 16, sz = (3 + rnd() * 2.2).toFixed(1);
         var dark = toneAt(y) === 'dark', el = d.createElement('i');
         el.className = 'mote';
-        el.style.cssText = 'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;width:' + sz + 'px;height:' + sz + 'px;--mx:' + ((rnd() * 2 - 1) * 26).toFixed(0) + 'px;--md:' + (-rnd() * 9).toFixed(1) + 's;--mo:' + (dark ? '.9' : '.7') + ';color:' + (dark ? '#fff' : (rnd() > .5 ? '#8E86BE' : '#7C9E8B'));
-        box.appendChild(el); motes.push({ el: el, y: y, line: l, on: false });
+        el.style.cssText = 'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;width:' + sz + 'px;height:' + sz + 'px;--mx:' + ((rnd() * 2 - 1) * 26).toFixed(0) + 'px;--md:' + (-rnd() * 9).toFixed(1) + 's;--mo:' + (dark ? '.6' : '.45') + ';color:' + (dark ? '#fff' : (rnd() > .5 ? '#8E86BE' : '#7C9E8B'));
+        box.appendChild(el); motes.push({ el: el, y: y, on: false });
       }
     });
   }
@@ -164,8 +126,9 @@
     var sy = W.pageYOffset || root.scrollTop || 0, k = S.k, vh = S.vh, moving = false;
     var tr = trails[S.mode];
     if (tr) {
-      var yT = trailOn ? Math.max((sy + vh * .78) / k + 60, S.mode === 'pc' ? 700 : 560) : -1;
-      moving = tr.update(yT, dt);
+      // 画面の上から7割まではくっきり、その下の帯（画面の4割ぶん）でぼかしながら現れる
+      var band = vh * .42 / k, yT = trailOn ? (sy + vh * .7) / k + band : tr.start;
+      moving = tr.update(Math.max(yT, tr.start), dt, band);
     }
     if (S.mode === 'pc') {
       updateNote((sy + vh * .5) / k, sy, vh, k);
@@ -177,7 +140,7 @@
           p.el.style.transform = 'translate3d(0,' + v.toFixed(2) + 'px,0)' + (p.sc ? ' scale(' + p.sc + ')' : '');
         }
         for (var m = 0; m < motes.length; m++) {
-          var mo = motes[m], vy = mo.y * k - sy, on = vy > -120 && vy < vh + 160 && mo.line.curY >= mo.y;
+          var mo = motes[m], vy = mo.y * k - sy, on = vy > -120 && vy < vh + 160 && tr && tr.cur - tr.band >= mo.y;
           if (on !== mo.on) { mo.on = on; mo.el.classList.toggle('on', on); }
         }
       }
@@ -240,7 +203,7 @@
       group(a, [rv(a, i * .1), bloom(a.querySelector('.ph'), i * .1 + .1)]);
     });
     // 大きな写真
-    q(pc, '[data-sec="technology"] > div > img.ph, [data-sec="sustainability"] > div > img.ph, [data-sec="recruit"] .plx > img, [data-sec="contact"] .plx > img').forEach(function (img) {
+    q(pc, '[data-sec="technology"] > div > img.ph, [data-sec="sustainability"] > div > img.ph, [data-sec="recruit"] .plx > img, [data-sec="contact"] .ink > img').forEach(function (img) {
       group(secOf(img), [bloom(img, .1)]);
     });
     // お知らせの行
