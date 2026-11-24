@@ -1,0 +1,126 @@
+/* =========================================================
+   山本香料 トップページ デモ ／ 画面の枠と動きの定義
+   カンプ（PC 1440 / スマホ 390）をそのまま画面幅に合わせて拡大・縮小する。
+   動きは「香りの演出ガイド」の 01〜06 に対応。
+   ========================================================= */
+:root{--k:1;--sph:7834}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#0B2C24}
+body{margin:0;background:#0B2C24;overflow-x:hidden}
+.stage{position:relative;overflow:hidden;margin:0 auto}
+.stage-pc{width:calc(1440px*var(--k));height:calc(7980px*var(--k))}
+.stage-sp{width:calc(390px*var(--k));height:calc(var(--sph)*1px*var(--k))}
+.stage>.yp,.stage>.sp{position:absolute;left:0;top:0;transform-origin:0 0;transform:scale(var(--k))}
+@media (max-width:767.98px){.stage-pc,.note{display:none!important}}
+@media (min-width:768px){.stage-sp,.spmenu{display:none!important}}
+
+.yp a,.sp a,.sp button,.spmenu a,.spmenu button{-webkit-tap-highlight-color:transparent}
+.sp button,.spmenu button{font:inherit;cursor:pointer}
+.yp .plx,.sp .plx{position:absolute;inset:0;will-change:transform}
+
+/* ---------- 触れたときの動き（PC） ---------- */
+@media (hover:hover){
+  .yp header nav a,.yp footer nav a{padding-bottom:6px;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease}
+  .yp header nav a:hover,.yp footer nav a:hover{background-size:100% 1px}
+  .yp a svg,.yp .ar svg{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .yp a:hover>.ar svg,.yp a.ar:hover svg,.yp article:hover .ar svg,.yp a:hover>div>.ar svg,.yp a:hover>div>svg,.yp a.go:hover>svg{transform:translateX(6px)}
+  .yp header a.go:hover>svg{transform:translate(3px,-3px)}
+  .yp footer a.en:hover>svg{transform:translateY(-5px)}
+  .yp a .ph:not(.bl-i),.yp article .ph:not(.bl-i){transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .yp a:hover .ph,.yp article:hover .ph{transform:scale(1.045)}
+  .yp .news-row>span:last-child{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .yp .news-row:hover>span:last-child{transform:translateX(8px)}
+}
+.js .yp .sc-arrow{animation:sc-arrow 2.6s ease-in-out infinite}
+@keyframes sc-arrow{0%,100%{transform:translateY(-2px)}50%{transform:translateY(5px)}}
+
+/* ---------- 06 香りのノート表示（PC・画面に固定） ---------- */
+.note{position:fixed;z-index:30;left:calc(44px*var(--k));top:50%;display:flex;flex-direction:column;align-items:center;gap:14px;font-family:"Cormorant Garamond","Times New Roman",serif;font-size:11px;letter-spacing:.34em;color:#fff;text-shadow:0 0 10px rgba(11,44,36,.6);transform:translateY(-50%) scale(var(--k));transform-origin:0 50%;pointer-events:none;transition:opacity 1.4s ease 2s}
+.note>*{transition:color .5s ease,text-shadow .5s ease,opacity .6s ease}
+.note .l{color:#0B2C24;text-shadow:0 0 10px rgba(251,249,244,.95)}
+.note .nl{writing-mode:vertical-rl;opacity:.5}
+.note .nl.on{opacity:1}
+.note .slot{width:5px;height:5px}
+.note .bar{position:relative;width:1px;height:54px;background:currentColor;opacity:.42}
+.note .bar i{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:currentColor;transform-origin:0 0;transform:scaleY(var(--f,0))}
+.note .dot{position:absolute;left:50%;top:0;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.14);transition:transform .9s cubic-bezier(.3,.7,.2,1),color .5s ease,box-shadow .5s ease}
+.note .dot.l{box-shadow:0 0 0 4px rgba(11,44,36,.1)}
+
+/* ---------- スマホのメニュー ---------- */
+.spmenu{position:fixed;inset:0;z-index:60;background:#0B2C24;color:#fff;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
+.spmenu.open{opacity:1;visibility:visible;transition:opacity .5s ease}
+.spmenu-in{position:absolute;left:0;top:0;width:390px;height:calc(100vh/var(--k));height:calc(100dvh/var(--k));transform:scale(var(--k));transform-origin:0 0;overflow-y:auto;font-family:"Shippori Mincho","Yu Mincho","Hiragino Mincho ProN",serif;-webkit-font-smoothing:antialiased}
+.spmenu-in *{box-sizing:border-box}
+.spmenu .hz{position:absolute;border-radius:50%;pointer-events:none}
+.spmenu-bar{position:relative;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 12px 0 24px}
+.spmenu-bar img{display:block;height:20px;filter:brightness(0) invert(1)}
+.spmenu-close{position:relative;width:48px;height:48px;padding:0;border:0;background:none;color:#fff}
+.spmenu-close span{position:absolute;left:11px;top:23px;width:26px;height:1px;background:currentColor;transform:rotate(24deg)}
+.spmenu-close span+span{transform:rotate(-24deg)}
+.spmenu nav{position:relative;margin:26px 24px 0;border-top:1px solid rgba(255,255,255,.18)}
+.spmenu nav a{display:flex;align-items:baseline;gap:18px;padding:17px 0 16px;border-bottom:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-size:18px;letter-spacing:.12em;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.spmenu nav a span{font-family:"Cormorant Garamond","Times New Roman",serif;font-size:14px;letter-spacing:.1em;color:#CFC6F2}
+.spmenu.open nav a{opacity:1;transform:none;transition-delay:calc(.12s + var(--i)*.05s)}
+.spmenu-cta{position:relative;display:flex;align-items:center;justify-content:space-between;height:64px;margin:30px 24px 0;padding:0 26px;background:#F6F2E9;color:#0B2C24;text-decoration:none;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;letter-spacing:.16em}
+.spmenu-tel{position:relative;margin:26px 24px 40px;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-size:12px;line-height:1.9;letter-spacing:.06em;color:rgba(255,255,255,.72)}
+
+/* ---------- スマホ：香料ラインナップの横スワイプ ---------- */
+.sp .swipe{display:flex;gap:14px;padding:0 24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 24px;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+.sp .swipe::-webkit-scrollbar{display:none}
+.sp .swipe>a{scroll-snap-align:start}
+.sp .swipe-bar{transition:transform .25s ease}
+
+/* =========================================================
+   ここから下は「動きを許可している人」だけに効く（html.js）
+   ========================================================= */
+
+/* ---------- 01 香りの軌跡 ---------- */
+.js .trail .wisp{transition:stroke-dashoffset 2.8s cubic-bezier(.3,.6,.3,1)}
+.js .trail .pt{opacity:0;transition:opacity 1.1s ease}
+.js .trail .pt.on{opacity:.85}
+.trail .tip{opacity:0;transition:opacity .9s ease}
+.js .trail .tip.on{opacity:1}
+.js .trail .tip.halo.on{opacity:.24}
+
+/* ---------- 02 香りの霞 ---------- */
+.js .haze{opacity:0;transition:opacity 2.6s ease .2s}
+.js .sec.seen .haze{opacity:1}
+.js .sec.in-view .haze{animation:hz1 var(--hd,12s) ease-in-out infinite alternate}
+.js .sec.in-view .haze.hz-b{animation-name:hz2}
+.yp{--hx:48px;--hy:-28px}
+.sp{--hx:26px;--hy:-18px}
+@keyframes hz1{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(var(--hx),var(--hy),0) scale(1.15)}}
+@keyframes hz2{from{transform:translate3d(0,0,0) scale(1.1)}to{transform:translate3d(calc(var(--hx)*-.9),calc(var(--hy)*-1.1),0) scale(.97)}}
+
+/* ---------- 03 香り立ち（写真） ---------- */
+.js .bl-i{opacity:0;filter:blur(18px);transform:scale(1.07);transition:opacity 1.4s cubic-bezier(.3,.6,.3,1) var(--d,0s),filter 1.4s cubic-bezier(.3,.6,.3,1) var(--d,0s),transform 1.9s cubic-bezier(.2,.6,.2,1) var(--d,0s)}
+.js .bl-i.is-in{opacity:1;filter:none;transform:none}
+.js .bl-i.done{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+
+/* ---------- 04 香りの粒 ---------- */
+.motes{position:absolute;left:0;top:0;width:0;height:0;z-index:5;pointer-events:none}
+.mote{position:absolute;border-radius:50%;background:currentColor;opacity:0}
+.mote.on{animation:mote 9s ease-in-out var(--md,0s) infinite;will-change:transform,opacity}
+@keyframes mote{0%{transform:translate3d(0,0,0);opacity:0}16%{opacity:var(--mo,.9)}100%{transform:translate3d(var(--mx,10px),-128px,0);opacity:0}}
+
+/* ---------- 05 見出しの現れ方 ---------- */
+.js .ch{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.16em);transition:opacity .9s ease var(--cd,0s),filter .9s ease var(--cd,0s),transform 1s cubic-bezier(.2,.7,.2,1) var(--cd,0s)}
+.js .chars.is-in .ch,.js.is-ready .yp [data-op="chars"] .ch{opacity:1;filter:none;transform:none}
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity 1.1s ease var(--d,0s),transform 1.2s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js .rv.is-in{opacity:1;transform:none}
+.js .hd-row .rule{transform:scaleX(0);transform-origin:0 50%;transition:transform 1.3s cubic-bezier(.3,.7,.2,1) var(--d,0s)}
+.js .hd-row .label{opacity:0;transition:opacity 1s ease var(--d,0s)}
+.js .hd-row .num{opacity:0;transition:opacity 1s ease calc(var(--d,0s) + .5s)}
+.js .hd-row.is-in .rule{transform:none}
+.js .hd-row.is-in .label,.js .hd-row.is-in .num{opacity:1}
+
+/* ---------- 最初の画面の入り方（PC） ---------- */
+.js .yp [data-op]{opacity:0}
+.js .yp [data-op="chars"]{opacity:1}
+.js .yp [data-op="hero"]{filter:blur(22px);transform:scale(1.08);transition:opacity 1.8s ease .1s,filter 2.4s ease .1s,transform 3.2s cubic-bezier(.2,.6,.2,1) .1s}
+.js .yp [data-op="fade"]{transition:opacity 1.5s ease var(--d,0s)}
+.js .yp [data-op="up"]{transform:translateY(18px);transition:opacity 1.2s ease var(--d,0s),transform 1.3s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js .yp [data-op="down"]{transform:translateY(-12px);transition:opacity 1.2s ease var(--d,0s),transform 1.3s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js .yp [data-op="arch"]{transform:translateY(36px);filter:blur(14px);transition:opacity 1.6s ease var(--d,0s),filter 1.6s ease var(--d,0s),transform 1.8s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js.is-ready .yp [data-op]{opacity:1;filter:none;transform:none}
+.js .note{opacity:0}
+.js.is-ready .note{opacity:1}
