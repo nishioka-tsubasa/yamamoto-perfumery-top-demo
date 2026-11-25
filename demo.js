@@ -380,6 +380,23 @@
     });
   }
 
+  /* ---------- 子メニュー（PC）：開いている間はヘッダーも生成りに。押したら一度閉じる。Esc でも閉じる ---------- */
+  function setupMegaMenu() {
+    var g = ghd.pc; if (!g) return;
+    var nav = g.querySelector('.gn'); if (!nav) return;
+    function open() { g.classList.add('is-menu'); }
+    function close() { g.classList.remove('is-menu'); }
+    q(nav, '.gn-item').forEach(function (it) {
+      var has = !!it.querySelector('.gn-panel');
+      it.addEventListener('pointerenter', function () { if (has && !g.classList.contains('gn-hold')) open(); else if (!has) close(); });
+      it.addEventListener('focusin', function () { g.classList.remove('gn-hold'); if (has) open(); else close(); });
+    });
+    nav.addEventListener('pointerleave', function () { close(); g.classList.remove('gn-hold'); });
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) close(); });
+    nav.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a')) { g.classList.add('gn-hold'); close(); if (d.activeElement && d.activeElement.blur) d.activeElement.blur(); } });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape' && g.classList.contains('is-menu')) { g.classList.add('gn-hold'); close(); if (nav.contains(d.activeElement)) d.activeElement.blur(); } });
+  }
+
   /* ---------- お知らせ・社長コラム：「すべて／お知らせ／社長コラム」の切り替え（PCとスマホで同じ状態にそろえる） ---------- */
   function selectTab(name, focus) {
     q(d, '.nw-tabs').forEach(function (tl) {
@@ -449,7 +466,7 @@
     var h1 = pc.querySelector('h1[data-op="chars"]'); if (h1) splitChars(h1, parseFloat(h1.getAttribute('data-d') || .9), .12);
     if ('IntersectionObserver' in W) setupReveal();
   }
-  setupSparks(); setupTrail(); setupSections(); setupLinks(); setupTabs(); setupSP();
+  setupSparks(); setupTrail(); setupSections(); setupLinks(); setupTabs(); setupMegaMenu(); setupSP();
   layout();
 
   var started = false;

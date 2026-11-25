@@ -22,7 +22,7 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .ghd-sp.is-solid{--hh:58}
 .ghd-bar{position:absolute;left:0;right:0;top:0;height:calc(var(--hh)*1px*var(--k));background-color:rgba(11,44,36,0);transition:height .6s cubic-bezier(.3,.7,.2,1),background-color .6s ease,box-shadow .6s ease}
 .ghd.is-solid .ghd-bar{background-color:rgba(11,44,36,.9);-webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15)}
-.ghd.is-solid.is-light .ghd-bar{background-color:rgba(251,249,244,.9);box-shadow:0 1px 0 rgba(11,44,36,.08)}
+.ghd.is-solid.is-light .ghd-bar,.ghd.is-menu .ghd-bar{background-color:rgba(251,249,244,.9);box-shadow:0 1px 0 rgba(11,44,36,.08)}
 .ghd-in{position:relative;margin:0 auto;height:0}
 .ghd-pc .ghd-in{width:calc(1440px*var(--k))}
 .ghd-sp .ghd-in{width:calc(390px*var(--k))}
@@ -30,12 +30,30 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .ghd-pc .ghd-c{width:1440px}
 .ghd-sp .ghd-c{width:390px}
 .ghd header{height:calc(var(--hh)*1px)!important;pointer-events:auto;transition:height .6s cubic-bezier(.3,.7,.2,1)}
-.ghd.is-solid.is-light .ghd-c{color:#0B2C24}
+.ghd.is-solid.is-light .ghd-c,.ghd.is-menu .ghd-c{color:#0B2C24}
 .ghd header img{transition:filter .5s ease}
-.ghd.is-solid.is-light header img{filter:brightness(0) saturate(100%) invert(13%) sepia(18%) saturate(1200%) hue-rotate(113deg)!important}
+.ghd.is-solid.is-light header img,.ghd.is-menu header img{filter:brightness(0) saturate(100%) invert(13%) sepia(18%) saturate(1200%) hue-rotate(113deg)!important}
 .ghd header a.go{transition:background-color .5s ease,color .5s ease}
-.ghd.is-solid.is-light header a.go{background:#0B2C24!important;color:#F6F2E9!important}
+.ghd.is-solid.is-light header a.go,.ghd.is-menu header a.go{background:#0B2C24!important;color:#F6F2E9!important}
 .ghd-sp header button{color:inherit!important}
+
+/* ---------- 子メニュー（PC） ----------
+   大項目にマウスを乗せる／キーボードで選ぶと、ヘッダーの下に生成りの帯が出て子メニューが並ぶ。
+   帯が出ている間はヘッダーも生成りにして、ひと続きに見せる */
+.ghd.is-menu .ghd-bar{background-color:rgba(251,249,244,.98);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.ghd .yp .gn-panel{display:grid;grid-template-columns:280px minmax(0,1fr);gap:56px;position:absolute;left:0;right:0;top:100%;padding:30px 120px 38px;isolation:isolate;color:#1B2A25;letter-spacing:.08em;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.7,.2,1),visibility 0s linear .45s}
+.ghd .gn-item:hover>.gn-panel,.ghd .gn-item:focus-within>.gn-panel{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease .06s,transform .5s cubic-bezier(.2,.7,.2,1) .06s,visibility 0s}
+.ghd.gn-hold .gn-panel{opacity:0!important;visibility:hidden!important}
+.ghd .yp .gn-panel::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:-100vmax;right:-100vmax;background:#FBF9F4;border-top:1px solid rgba(11,44,36,.1);box-shadow:0 24px 36px -24px rgba(11,44,36,.3)}
+.ghd .gn-head{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.ghd .gn-en{font-size:12px;letter-spacing:.3em;color:#6A5BA8}
+.ghd .gn-jp{font-family:"Shippori Mincho","Yu Mincho","Hiragino Mincho ProN",serif;font-size:24px;font-weight:500;letter-spacing:.12em}
+.ghd .gn-all{margin-top:14px;display:inline-flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.1em;color:#3D4D47}
+.ghd .gn-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:40px;margin:0;padding:0;list-style:none;align-content:start}
+.ghd .gn-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 0 15px;border-bottom:1px solid rgba(11,44,36,.12);font-family:"Shippori Mincho","Yu Mincho","Hiragino Mincho ProN",serif;font-size:15px;font-weight:500;letter-spacing:.1em;color:#1B2A25}
+.ghd .gn-list a svg,.ghd .gn-all svg{flex:none;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.ghd .gn-list a:hover svg,.ghd .gn-list a:focus-visible svg,.ghd .gn-all:hover svg{transform:translateX(5px)}
+.ghd .gn-list a:hover{color:#5F8470}
 
 .yp a,.sp a,.sp button,.spmenu a,.spmenu button{-webkit-tap-highlight-color:transparent}
 .sp button,.spmenu button{font:inherit;cursor:pointer}
@@ -43,8 +61,8 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 
 /* ---------- 触れたときの動き（PC） ---------- */
 @media (hover:hover){
-  .yp header nav a,.yp footer nav a{padding-bottom:6px;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease}
-  .yp header nav a:hover,.yp footer nav a:hover{background-size:100% 1px}
+  .yp header nav .gn-top>span,.yp footer nav a{padding-bottom:6px;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease}
+  .yp header nav .gn-item:hover>.gn-top>span,.yp header nav .gn-top:focus-visible>span,.yp footer nav a:hover{background-size:100% 1px}
   .yp a svg,.yp .ar svg{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
   .yp a:hover>.ar svg,.yp a.ar:hover svg,.yp article:hover .ar svg,.yp a:hover>div>.ar svg,.yp a:hover>div>svg,.yp a.go:hover>svg{transform:translateX(6px)}
   .yp a:hover>.more>.ar svg{transform:translateX(6px)}
