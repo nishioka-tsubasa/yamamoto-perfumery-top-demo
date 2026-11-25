@@ -1,5 +1,5 @@
 /* 山本香料 トップページ デモ ／ 動きの制御
-   01 香りの流れ（書から書まで、斜めに行き来しながら続く線。いつもゆっくり波打つ） 02 香りの霞 03 香り立ち（写真）
+   01 香りの流れ（書から書まで斜めに続く線。スクロールで流れてきて、いつもゆっくり波打つ） 02 香りの霞 03 香り立ち（写真）
    04 香りの粒 05 見出しの現れ方 06 香りのノート表示 ／ ヘッダーは画面上に固定
    スマホは 01・02・04 だけを動かす（演出ガイドの決めごと）。 */
 (function () {
@@ -66,53 +66,83 @@
 
   /* ---------- 01 香りの流れ ----------
      最初の画面の書から、お問い合わせの書まで、3本の細い線が斜めに行き来しながら続く。
-     線はいつも、風に揺れる煙のようにゆっくり波打つ（波は線に沿って流れる。先端を走らせて描くことはしない）。
-     スクロールしている間は波が少し速くなり、止めると静かにもとの速さに戻る。
-     形を作り直すのは画面に見えている部分だけ（線を600pxずつに分けておく）。 */
-  var TR = { pc: null, sp: null }, CH = 30, STEP = 20;
+     ・スクロールに合わせて、線が道すじに沿って流れてくる。流れの先は長くぼかして（先端は見えない）、
+       フェードインしながら現れる。少し遅れて追いつくので、指を止めてもふわっと流れ続ける。
+     ・現れた線は、風に揺れる煙のようにいつもゆっくり波打つ（スクロール中は少し速く）。
+     ・形を作り直すのは画面に見えている部分だけ（線を600pxずつに分けておく）。 */
+  var TR = { pc: null, sp: null }, CH = 30, STEP = 20, NF = 9;
   function setupTrail() {
     var data = W.YP_TRAIL; if (!anim || !data) return;
     [['pc', pc], ['sp', sp]].forEach(function (m) {
       var svg = m[1].querySelector('svg.trail'), D = data[m[0]];
       if (!svg || !D) return;
-      var tr = { svg: svg, chunks: [], motes: [], t: 0 };
+      var tr = { svg: svg, strands: [], motes: [], t: 0, h: 0, F: m[0] === 'pc' ? 26 : 15, frame: 0 };
       D.strands.forEach(function (st, si) {
         var P = st.p, n = P.length / 2, nx = new Float32Array(n), ny = new Float32Array(n);
         for (var i = 0; i < n; i++) {
           var a = Math.max(0, i - 1), b = Math.min(n - 1, i + 1), dx = P[2 * b] - P[2 * a], dy = P[2 * b + 1] - P[2 * a + 1], L = Math.sqrt(dx * dx + dy * dy) || 1;
           nx[i] = -dy / L; ny[i] = dx / L;
         }
-        var S2 = { P: P, n: n, nx: nx, ny: ny, w1: st.w1, w2: st.w2, L: st.L };
+        var S2 = { P: P, n: n, nx: nx, ny: ny, w1: st.w1, w2: st.w2, L: st.L, qx: new Float32Array(n), qy: new Float32Array(n), stamp: new Int32Array(n).fill(-1), chunks: [], fade: [] };
         var orig = svg.querySelector('path[data-strand="' + si + '"]');
         for (var a2 = 0; a2 < n - 1; a2 += CH) {
-          var b2 = Math.min(n - 1, a2 + CH), el = orig.cloneNode(false), y0 = 1e9, y1 = -1e9;
-          for (var j = a2; j <= b2; j++) { y0 = Math.min(y0, P[2 * j + 1]); y1 = Math.max(y1, P[2 * j + 1]); }
+          var b2 = Math.min(n - 1, a2 + CH), el = orig.cloneNode(false);
+          el.setAttribute('d', '');
           orig.parentNode.insertBefore(el, orig);
-          tr.chunks.push({ el: el, S: S2, a: a2, b: b2, y0: y0 - 50, y1: y1 + 50 });
+          S2.chunks.push({ el: el, a: a2, b: b2, y0: yMin(P, a2, b2) - 50, y1: yMax(P, a2, b2) + 50 });
         }
+        // 流れの先のぼかし：濃さを9段階に分けた短い線を、先端の手前に並べる
+        for (var f = 0; f < NF; f++) { var fe = orig.cloneNode(false); fe.setAttribute('d', ''); fe.setAttribute('opacity', (1 - (f + .5) / NF).toFixed(3)); orig.parentNode.insertBefore(fe, orig); S2.fade.push(fe); }
         orig.parentNode.removeChild(orig);
+        tr.strands.push(S2);
       });
+      // スクロール位置 → 線の先の位置：道すじの「そこまでに一番下まで来た高さ」を使う
+      var P0 = tr.strands[0].P, n0 = tr.strands[0].n, cm = new Float32Array(n0), mx = -1e9;
+      for (var i2 = 0; i2 < n0; i2++) { mx = Math.max(mx, P0[2 * i2 + 1]); cm[i2] = mx; }
+      tr.cm = cm; tr.n = n0;
       var box = d.createElement('div'); box.className = 'tmotes'; box.setAttribute('aria-hidden', 'true');
       svg.parentNode.insertBefore(box, svg.nextSibling);
       tr.motes = makeMotes(svg, box, m[0] === 'pc' ? 13 : 113, 26);
+      // 粒は、線がそこまで流れてきてから出す
+      tr.motes.forEach(function (mo) {
+        var r = mo.el.style, x = parseFloat(r.left), best = 0, bd = 1e18;
+        for (var j = 0; j < n0; j++) { var ddx = P0[2 * j] - x, ddy = P0[2 * j + 1] - mo.y, dd = ddx * ddx + ddy * ddy; if (dd < bd) { bd = dd; best = j; } }
+        mo.i = best;
+      });
       TR[m[0]] = tr;
     });
     if (TR.pc || TR.sp) requestAnimationFrame(loop);
   }
-  var TAU = Math.PI * 2, qx = new Float32Array(CH + 3), qy = new Float32Array(CH + 3);
-  function chunkPath(c, t) {
-    var S2 = c.S, P = S2.P, w1 = S2.w1, w2 = S2.w2, L = S2.L, a = Math.max(0, c.a - 1), b = Math.min(S2.n - 1, c.b + 1), m = 0;
-    for (var i = a; i <= b; i++, m++) {
-      var s = i * STEP, env = Math.min(1, s / 300, (L - s) / 300);
-      var o = env * (w1[0] * Math.sin(TAU * (s - w1[2] * t) / w1[1] + w1[3]) + w2[0] * Math.sin(TAU * (s - w2[2] * t) / w2[1] + w2[3]));
-      qx[m] = P[2 * i] + S2.nx[i] * o; qy[m] = P[2 * i + 1] + S2.ny[i] * o;
+  function yMin(P, a, b) { var v = 1e9; for (var i = a; i <= b; i++) v = Math.min(v, P[2 * i + 1]); return v; }
+  function yMax(P, a, b) { var v = -1e9; for (var i = a; i <= b; i++) v = Math.max(v, P[2 * i + 1]); return v; }
+  function idxAt(tr, y) {  // 道すじが高さ y に届く位置（点の番号、小数あり）
+    var cm = tr.cm, lo = 0, hi = tr.n - 1;
+    if (y <= cm[0]) return 0;
+    if (y >= cm[hi]) return hi;
+    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (cm[mid] <= y) lo = mid; else hi = mid; }
+    return lo + (y - cm[lo]) / Math.max(1, cm[hi] - cm[lo]);
+  }
+  var TAU = Math.PI * 2;
+  function disp(S2, i, t, fr) {
+    if (S2.stamp[i] === fr) return;
+    var s = i * STEP, w1 = S2.w1, w2 = S2.w2, env = Math.min(1, s / 300, (S2.L - s) / 300);
+    var o = env * (w1[0] * Math.sin(TAU * (s - w1[2] * t) / w1[1] + w1[3]) + w2[0] * Math.sin(TAU * (s - w2[2] * t) / w2[1] + w2[3]));
+    S2.qx[i] = S2.P[2 * i] + S2.nx[i] * o; S2.qy[i] = S2.P[2 * i + 1] + S2.ny[i] * o; S2.stamp[i] = fr;
+  }
+  // 点の番号 s0〜s1（小数あり）の区間を、なめらかな線にする
+  function rangePath(S2, s0, s1, t, fr) {
+    var n = S2.n, i0 = Math.ceil(s0), i1 = Math.floor(s1), qx = S2.qx, qy = S2.qy;
+    for (var i = Math.max(0, Math.floor(s0) - 1); i <= Math.min(n - 1, Math.ceil(s1) + 1); i++) disp(S2, i, t, fr);
+    function at(s) { var a = Math.min(n - 2, Math.floor(s)), u = s - a; return [qx[a] + (qx[a + 1] - qx[a]) * u, qy[a] + (qy[a + 1] - qy[a]) * u]; }
+    var p = at(s0), dd = 'M' + p[0].toFixed(1) + ',' + p[1].toFixed(1);
+    if (i0 > i1) { p = at(s1); return dd + 'L' + p[0].toFixed(1) + ',' + p[1].toFixed(1); }
+    if (i0 > s0) dd += 'L' + qx[i0].toFixed(1) + ',' + qy[i0].toFixed(1);
+    for (var k = i0; k < i1; k++) {
+      var p0 = Math.max(0, k - 1), p3 = Math.min(n - 1, k + 2);
+      dd += 'C' + (qx[k] + (qx[k + 1] - qx[p0]) / 6).toFixed(1) + ',' + (qy[k] + (qy[k + 1] - qy[p0]) / 6).toFixed(1) + ' ' +
+        (qx[k + 1] - (qx[p3] - qx[k]) / 6).toFixed(1) + ',' + (qy[k + 1] - (qy[p3] - qy[k]) / 6).toFixed(1) + ' ' + qx[k + 1].toFixed(1) + ',' + qy[k + 1].toFixed(1);
     }
-    var f = c.a - a, last = m - 1 - (b - c.b), dd = 'M' + qx[f].toFixed(1) + ',' + qy[f].toFixed(1);
-    for (var k2 = f; k2 < last; k2++) {
-      var p0 = k2 > 0 ? k2 - 1 : k2, p3 = k2 + 2 <= m - 1 ? k2 + 2 : k2 + 1;
-      dd += 'C' + (qx[k2] + (qx[k2 + 1] - qx[p0]) / 6).toFixed(1) + ',' + (qy[k2] + (qy[k2 + 1] - qy[p0]) / 6).toFixed(1) + ' ' +
-        (qx[k2 + 1] - (qx[p3] - qx[k2]) / 6).toFixed(1) + ',' + (qy[k2 + 1] - (qy[p3] - qy[k2]) / 6).toFixed(1) + ' ' + qx[k2 + 1].toFixed(1) + ',' + qy[k2 + 1].toFixed(1);
-    }
+    if (s1 > i1) { p = at(s1); dd += 'L' + p[0].toFixed(1) + ',' + p[1].toFixed(1); }
     return dd;
   }
   var lastNow = 0, lastSy = -1, boost = 0;
@@ -120,14 +150,36 @@
     requestAnimationFrame(loop);
     var dt = clamp((now - lastNow) / 1000 || .016, .001, .05); lastNow = now;
     var tr = TR[S.mode]; if (!tr || d.hidden) return;
-    var sy = W.pageYOffset || root.scrollTop || 0, v = lastSy < 0 ? 0 : Math.abs(sy - lastSy) / dt; lastSy = sy;
+    var fr = ++tr.frame, sy = W.pageYOffset || root.scrollTop || 0, v = lastSy < 0 ? 0 : Math.abs(sy - lastSy) / dt; lastSy = sy;
     // スクロールの速さに合わせて、波を最大3倍まで速める（ゆっくり戻す）
     boost += (Math.min(2, v / 900) - boost) * (1 - Math.exp(-dt * (v > 0 ? 4 : 1.6)));
     tr.t += dt * (1 + boost);
     var k = S.k, off = S.mode === 'pc' ? S.fvh - 800 : 0, y0 = sy / k - off - 120, y1 = (sy + S.vh) / k - off + 120;
-    for (var i = 0; i < tr.chunks.length; i++) { var c = tr.chunks[i]; if (c.y1 < y0 || c.y0 > y1) continue; c.el.setAttribute('d', chunkPath(c, tr.t)); }
+    // 線の先：画面の下から2割の高さまで流れてくる。追いつく速さには上限（PC 毎秒1100px相当）
+    if (flowsOn) {
+      var F = tr.F, hT = idxAt(tr, (sy + S.vh * .8) / k - off) + F * .55, hMin = idxAt(tr, y0 - 200) + F;
+      if (tr.h < hMin) tr.h = hMin;  // 画面より上に置いてきた分は待たせない（ページ内リンクで飛んだときなど）
+      if (hT > tr.h) tr.h += Math.min((hT - tr.h) * (1 - Math.exp(-dt * 2.2)), 55 * dt) + .02;
+    }
+    var hFull = tr.h - tr.F;
+    for (var si = 0; si < tr.strands.length; si++) {
+      var S2 = tr.strands[si];
+      for (var c = 0; c < S2.chunks.length; c++) {
+        var ch = S2.chunks[c];
+        if (ch.y1 < y0 || ch.y0 > y1) continue;
+        var e = Math.min(ch.b, hFull);
+        ch.el.setAttribute('d', e > ch.a + .01 ? rangePath(S2, ch.a, e, tr.t, fr) : '');
+      }
+      for (var f = 0; f < NF; f++) {
+        var s0 = Math.max(0, hFull + f * tr.F / NF), s1 = Math.min(S2.n - 1, hFull + (f + 1) * tr.F / NF), fe = S2.fade[f];
+        if (s1 <= s0 + .01) { fe.setAttribute('d', ''); continue; }
+        var ya = S2.P[2 * Math.floor(s0) + 1], yb = S2.P[2 * Math.min(S2.n - 1, Math.ceil(s1)) + 1];
+        if (Math.max(ya, yb) + 50 < y0 || Math.min(ya, yb) - 50 > y1) { fe.setAttribute('d', ''); continue; }
+        fe.setAttribute('d', rangePath(S2, s0, s1, tr.t, fr));
+      }
+    }
     for (var j = 0; j < tr.motes.length; j++) {
-      var mo = tr.motes[j], on = flowsOn && mo.y > y0 - 60 && mo.y < y1 + 60;
+      var mo = tr.motes[j], on = flowsOn && mo.i < tr.h - tr.F * .5 && mo.y > y0 - 60 && mo.y < y1 + 60;
       if (on !== mo.on) { mo.on = on; mo.el.classList.toggle('on', on); }
     }
     if (flowsOn) for (var n2 = 0; n2 < sparks[S.mode].length; n2++) { var sp2 = sparks[S.mode][n2]; if (!sp2.on) { sp2.on = true; sp2.el.classList.add('on'); } }
