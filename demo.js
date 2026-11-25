@@ -1,5 +1,5 @@
 /* 山本香料 トップページ デモ ／ 動きの制御
-   01 香りの流れ（区画のさかいめを、右から左・左から右へ交互に線が流れる） 02 香りの霞 03 香り立ち（写真）
+   01 香りの流れ（書から書まで、斜めに行き来しながら続く線。いつもゆっくり波打つ） 02 香りの霞 03 香り立ち（写真）
    04 香りの粒 05 見出しの現れ方 06 香りのノート表示 ／ ヘッダーは画面上に固定
    スマホは 01・02・04 だけを動かす（演出ガイドの決めごと）。 */
 (function () {
@@ -11,7 +11,7 @@
   var noteEl = d.querySelector('.note');
   var S = { k: 1, mode: '', vh: W.innerHeight, w: 0, fvh: 0 };
   var secs = { pc: [], sp: [] };
-  var plx = [], flows = { pc: [], sp: [] }, flowsOn = !anim;
+  var plx = [];
   var ghd = { pc: d.querySelector('.ghd-pc'), sp: d.querySelector('.ghd-sp'), solid: null, light: null };
 
   function q(el, sel) { return Array.prototype.slice.call(el.querySelectorAll(sel)); }
@@ -37,64 +37,100 @@
       return { el: s, name: s.getAttribute('data-sec'), tone: s.getAttribute('data-tone'), top: s.offsetTop, h: s.offsetHeight };
     });
     if (isPC) { plx.forEach(function (p) { var s = secOf(p.el); p.top = s.offsetTop; p.h = s.offsetHeight; }); placeNote(); }
-    flows[S.mode].forEach(function (f) { var s = secOf(f.el); f.top = s.offsetTop + f.el.offsetTop; f.h = f.el.offsetHeight; });
     ghd.solid = ghd.light = null;
     tick();
   }
   function secOf(el) { while (el && !(el.classList && el.classList.contains('sec'))) el = el.parentNode; return el; }
 
-  /* ---------- 01 香りの流れ・04 香りの粒 ----------
-     線は区画のさかいめの余白を横切り、写真と文字の後ろを通る。
-     スクロールで区画が上がってくると、流れの向き（右→左／左→右）に、霞が晴れるように現れる。
-     現れ方は少し遅れて追いつき、指を止めてもふわっと流れ続ける。線全体もスクロールに合わせて流れの向きへ少し滑る。
-     粒は線のそばで生まれ、流れの向きへ漂いながら、ゆっくり立ちのぼる。 */
-  function setupFlows() {
-    [['pc', pc, 1440], ['sp', sp, 390]].forEach(function (m) {
-      q(m[1], '.flow').forEach(function (el, gi) {
-        var svg = el.querySelector('svg'), dir = el.getAttribute('data-dir'), spark = el.classList.contains('fv-sparks');
-        var f = { el: el, svg: svg, sign: dir === 'rtl' ? 1 : -1, spark: spark, W: m[2], p: anim ? 0 : 1, dx: 0, top: 0, h: 0, motes: [] };
-        if (anim) {
-          // 粒：SVGの丸を、なめらかに動かせる小さな光（HTML）に置き換える
-          var seed = 7 + gi * 13 + (m[0] === 'sp' ? 101 : 0);
-          var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-          q(svg, '.mo').forEach(function (c) {
-            var x = +c.getAttribute('cx'), y = +c.getAttribute('cy'), r = +c.getAttribute('r'), sz = (r * 2.3).toFixed(1);
-            var i = d.createElement('i'); i.className = 'mote';
-            var mx = spark ? (rnd() * 2 - 1) * 30 : -f.sign * (18 + rnd() * 38);
-            i.style.cssText = 'left:' + (x - r) + 'px;top:' + (y - r) + 'px;width:' + sz + 'px;height:' + sz + 'px;color:' + c.getAttribute('fill') +
-              ';--mx:' + mx.toFixed(0) + 'px;--my:' + (-(spark ? 70 : 46) - rnd() * (spark ? 90 : 60)).toFixed(0) + 'px;--mt:' + (8 + rnd() * 5).toFixed(1) + 's;--md:' + (-rnd() * 12).toFixed(1) + 's;--mo:' + Math.min(.85, +c.getAttribute('opacity') + .1).toFixed(2);
-            el.appendChild(i); c.parentNode.removeChild(c);
-            f.motes.push({ el: i, fx: dir === 'rtl' ? 1 - x / m[2] : x / m[2], on: false });
-          });
-        }
-        flows[m[0]].push(f);
-      });
+  /* ---------- 04 香りの粒（共通）：SVGの丸を、なめらかに動かせる小さな光（HTML）に置き換える ---------- */
+  function makeMotes(svg, box, seed, spread) {
+    var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }, list = [];
+    q(svg, '.mo').forEach(function (c) {
+      var x = +c.getAttribute('cx'), y = +c.getAttribute('cy'), r = +c.getAttribute('r'), sz = (r * 2.3).toFixed(1);
+      var i = d.createElement('i'); i.className = 'mote';
+      i.style.cssText = 'left:' + (x - r) + 'px;top:' + (y - r) + 'px;width:' + sz + 'px;height:' + sz + 'px;color:' + c.getAttribute('fill') +
+        ';--mx:' + ((rnd() * 2 - 1) * spread).toFixed(0) + 'px;--my:' + (-50 - rnd() * 80).toFixed(0) + 'px;--mt:' + (8 + rnd() * 5).toFixed(1) + 's;--md:' + (-rnd() * 12).toFixed(1) + 's;--mo:' + Math.min(.85, +c.getAttribute('opacity') + .1).toFixed(2);
+      box.appendChild(i); c.parentNode.removeChild(c);
+      list.push({ el: i, y: y, on: false });
+    });
+    return list;
+  }
+
+  /* ---------- 最初の画面：書のまわりから立ちのぼる粒 ---------- */
+  var sparks = { pc: [], sp: [] }, flowsOn = !anim;
+  function setupSparks() {
+    [['pc', pc], ['sp', sp]].forEach(function (m) {
+      q(m[1], '.fv-sparks').forEach(function (el) { if (anim) sparks[m[0]] = sparks[m[0]].concat(makeMotes(el.querySelector('svg'), el, m[0] === 'pc' ? 7 : 101, 30)); });
     });
   }
-  function updateFlows(sy, vh, k, dt) {
-    var list = flows[S.mode], moving = false;
-    for (var i = 0; i < list.length; i++) {
-      var f = list[i], top = f.top * k - sy, h = f.h * k, c = top + h / 2;
-      if (top > vh + 200) continue;
-      if (top + h < -200) { if (f.p < 1 && flowsOn && !f.spark) { f.p = 1; f.svg.style.setProperty('--p', '1'); } continue; }  // 通り過ぎた線は出しておく
-      if (f.spark) {
-        if (flowsOn) for (var m = 0; m < f.motes.length; m++) if (!f.motes[m].on) { f.motes[m].on = true; f.motes[m].el.classList.add('on'); }
-        continue;
-      }
-      // 線のまとまりの中心が画面の下端に来たら現れはじめ、画面の半分ほど上がるころに出そろう
-      var target = flowsOn ? clamp((vh * 1.02 - c) / (vh * .46), 0, 1) : 0;
-      if (target > f.p + .001) { f.p += (target - f.p) * (1 - Math.exp(-dt * 2.4)); if (target - f.p < .002) f.p = target; moving = true; }
-      var dxT = f.sign * clamp(c / vh - .5, -1, 1) * (f.W > 600 ? 56 : 18);
-      if (Math.abs(dxT - f.dx) > .05) { f.dx += (dxT - f.dx) * (1 - Math.exp(-dt * 3)); moving = true; }
-      f.svg.style.setProperty('--p', f.p.toFixed(4));
-      f.svg.style.transform = 'translate3d(' + f.dx.toFixed(2) + 'px,0,0)';
-      var shown = f.p * 1.35 - .3;
-      for (var j = 0; j < f.motes.length; j++) {
-        var mo = f.motes[j];
-        if (!mo.on && shown >= mo.fx) { mo.on = true; mo.el.classList.add('on'); }
-      }
+
+  /* ---------- 01 香りの流れ ----------
+     最初の画面の書から、お問い合わせの書まで、3本の細い線が斜めに行き来しながら続く。
+     線はいつも、風に揺れる煙のようにゆっくり波打つ（波は線に沿って流れる。先端を走らせて描くことはしない）。
+     スクロールしている間は波が少し速くなり、止めると静かにもとの速さに戻る。
+     形を作り直すのは画面に見えている部分だけ（線を600pxずつに分けておく）。 */
+  var TR = { pc: null, sp: null }, CH = 30, STEP = 20;
+  function setupTrail() {
+    var data = W.YP_TRAIL; if (!anim || !data) return;
+    [['pc', pc], ['sp', sp]].forEach(function (m) {
+      var svg = m[1].querySelector('svg.trail'), D = data[m[0]];
+      if (!svg || !D) return;
+      var tr = { svg: svg, chunks: [], motes: [], t: 0 };
+      D.strands.forEach(function (st, si) {
+        var P = st.p, n = P.length / 2, nx = new Float32Array(n), ny = new Float32Array(n);
+        for (var i = 0; i < n; i++) {
+          var a = Math.max(0, i - 1), b = Math.min(n - 1, i + 1), dx = P[2 * b] - P[2 * a], dy = P[2 * b + 1] - P[2 * a + 1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+          nx[i] = -dy / L; ny[i] = dx / L;
+        }
+        var S2 = { P: P, n: n, nx: nx, ny: ny, w1: st.w1, w2: st.w2, L: st.L };
+        var orig = svg.querySelector('path[data-strand="' + si + '"]');
+        for (var a2 = 0; a2 < n - 1; a2 += CH) {
+          var b2 = Math.min(n - 1, a2 + CH), el = orig.cloneNode(false), y0 = 1e9, y1 = -1e9;
+          for (var j = a2; j <= b2; j++) { y0 = Math.min(y0, P[2 * j + 1]); y1 = Math.max(y1, P[2 * j + 1]); }
+          orig.parentNode.insertBefore(el, orig);
+          tr.chunks.push({ el: el, S: S2, a: a2, b: b2, y0: y0 - 50, y1: y1 + 50 });
+        }
+        orig.parentNode.removeChild(orig);
+      });
+      var box = d.createElement('div'); box.className = 'tmotes'; box.setAttribute('aria-hidden', 'true');
+      svg.parentNode.insertBefore(box, svg.nextSibling);
+      tr.motes = makeMotes(svg, box, m[0] === 'pc' ? 13 : 113, 26);
+      TR[m[0]] = tr;
+    });
+    if (TR.pc || TR.sp) requestAnimationFrame(loop);
+  }
+  var TAU = Math.PI * 2, qx = new Float32Array(CH + 3), qy = new Float32Array(CH + 3);
+  function chunkPath(c, t) {
+    var S2 = c.S, P = S2.P, w1 = S2.w1, w2 = S2.w2, L = S2.L, a = Math.max(0, c.a - 1), b = Math.min(S2.n - 1, c.b + 1), m = 0;
+    for (var i = a; i <= b; i++, m++) {
+      var s = i * STEP, env = Math.min(1, s / 300, (L - s) / 300);
+      var o = env * (w1[0] * Math.sin(TAU * (s - w1[2] * t) / w1[1] + w1[3]) + w2[0] * Math.sin(TAU * (s - w2[2] * t) / w2[1] + w2[3]));
+      qx[m] = P[2 * i] + S2.nx[i] * o; qy[m] = P[2 * i + 1] + S2.ny[i] * o;
     }
-    return moving;
+    var f = c.a - a, last = m - 1 - (b - c.b), dd = 'M' + qx[f].toFixed(1) + ',' + qy[f].toFixed(1);
+    for (var k2 = f; k2 < last; k2++) {
+      var p0 = k2 > 0 ? k2 - 1 : k2, p3 = k2 + 2 <= m - 1 ? k2 + 2 : k2 + 1;
+      dd += 'C' + (qx[k2] + (qx[k2 + 1] - qx[p0]) / 6).toFixed(1) + ',' + (qy[k2] + (qy[k2 + 1] - qy[p0]) / 6).toFixed(1) + ' ' +
+        (qx[k2 + 1] - (qx[p3] - qx[k2]) / 6).toFixed(1) + ',' + (qy[k2 + 1] - (qy[p3] - qy[k2]) / 6).toFixed(1) + ' ' + qx[k2 + 1].toFixed(1) + ',' + qy[k2 + 1].toFixed(1);
+    }
+    return dd;
+  }
+  var lastNow = 0, lastSy = -1, boost = 0;
+  function loop(now) {
+    requestAnimationFrame(loop);
+    var dt = clamp((now - lastNow) / 1000 || .016, .001, .05); lastNow = now;
+    var tr = TR[S.mode]; if (!tr || d.hidden) return;
+    var sy = W.pageYOffset || root.scrollTop || 0, v = lastSy < 0 ? 0 : Math.abs(sy - lastSy) / dt; lastSy = sy;
+    // スクロールの速さに合わせて、波を最大3倍まで速める（ゆっくり戻す）
+    boost += (Math.min(2, v / 900) - boost) * (1 - Math.exp(-dt * (v > 0 ? 4 : 1.6)));
+    tr.t += dt * (1 + boost);
+    var k = S.k, off = S.mode === 'pc' ? S.fvh - 800 : 0, y0 = sy / k - off - 120, y1 = (sy + S.vh) / k - off + 120;
+    for (var i = 0; i < tr.chunks.length; i++) { var c = tr.chunks[i]; if (c.y1 < y0 || c.y0 > y1) continue; c.el.setAttribute('d', chunkPath(c, tr.t)); }
+    for (var j = 0; j < tr.motes.length; j++) {
+      var mo = tr.motes[j], on = flowsOn && mo.y > y0 - 60 && mo.y < y1 + 60;
+      if (on !== mo.on) { mo.on = on; mo.el.classList.toggle('on', on); }
+    }
+    if (flowsOn) for (var n2 = 0; n2 < sparks[S.mode].length; n2++) { var sp2 = sparks[S.mode][n2]; if (!sp2.on) { sp2.on = true; sp2.el.classList.add('on'); } }
   }
 
   /* ---------- ヘッダー：画面上に固定。下の区画の明るさに合わせて背景を切り替える ---------- */
@@ -151,7 +187,6 @@
     var dt = clamp((t - last) / 1000 || .016, .001, .05); last = t;
     var sy = W.pageYOffset || root.scrollTop || 0, k = S.k, vh = S.vh, moving = false;
     updateHeader(sy, k);
-    if (anim) moving = updateFlows(sy, vh, k, dt);
     if (S.mode === 'pc') {
       updateNote((sy + vh * .5) / k, sy, vh, k);
       if (anim) {
@@ -317,7 +352,7 @@
     var h1 = pc.querySelector('h1[data-op="chars"]'); if (h1) splitChars(h1, parseFloat(h1.getAttribute('data-d') || .9), .12);
     if ('IntersectionObserver' in W) setupReveal();
   }
-  setupFlows(); setupSections(); setupLinks(); setupSP();
+  setupSparks(); setupTrail(); setupSections(); setupLinks(); setupSP();
   layout();
 
   var started = false;

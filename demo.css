@@ -98,10 +98,11 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
    ========================================================= */
 
 /* ---------- 01 香りの流れ ----------
-   流れの向き（--fd）に、ぼかしの縁（幅35%）をすべらせて線を見せていく。--p は 0→1（JS） */
-.flow{--fd:90deg}
-.flow[data-dir="rtl"]{--fd:270deg}
-.js .flow:not(.fv-sparks) svg{will-change:transform;-webkit-mask-image:linear-gradient(var(--fd),#000 0,#000 calc(var(--p,0)*135% - 35%),transparent calc(var(--p,0)*135%));mask-image:linear-gradient(var(--fd),#000 0,#000 calc(var(--p,0)*135% - 35%),transparent calc(var(--p,0)*135%))}
+   ページ全体を斜めに行き来する3本の線。写真・カード・ムエット（z-index 2）の後ろ、背景（z-index なし）の前。
+   形はJSが毎フレームゆらす（見えている所だけ）。PCは最初の画面の高さが変わるぶん、下へずらす */
+.stage .yp .trail,.stage .yp .tmotes{top:calc(var(--fvh,800)*1px - 800px)}
+.js .trail{will-change:transform}
+.tmotes{position:absolute;left:0;top:0;width:0;height:0;z-index:1;pointer-events:none}
 
 /* ---------- 02 香りの霞 ---------- */
 .js .haze{opacity:0;transition:opacity 2.6s ease .2s}
