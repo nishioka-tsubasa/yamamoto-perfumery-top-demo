@@ -358,15 +358,50 @@
     q(d, '.yp header a, .yp footer nav a, .sp footer nav a, .spmenu a').forEach(function (a) {
       var key = (a.getAttribute('data-go') || a.textContent).replace(/\s+/g, '').replace(/^\d+/, ''), name = GO[key];
       if (name) a.setAttribute('data-go', name);
+      if (key === '社長コラム' || key === 'お知らせ') a.setAttribute('data-go-tab', key === '社長コラム' ? 'column' : 'news');
     });
     q(d, '.yp footer a.en, .sp footer a.en, .yp header > a:first-child, .sp header > a:first-child').forEach(function (a) { a.setAttribute('data-go', 'top'); });
     d.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a') : null;
       if (!a) return;
       var name = a.getAttribute('data-go');
-      if (name) { e.preventDefault(); closeMenu(); go(name); }
+      if (name) { e.preventDefault(); closeMenu(); if (a.getAttribute('data-go-tab')) selectTab(a.getAttribute('data-go-tab')); go(name); }
       else if (a.getAttribute('href') === '#') e.preventDefault();
     });
+  }
+
+  /* ---------- お知らせ／社長コラムのタブ（PCとスマホで同じ状態にそろえる） ---------- */
+  function selectTab(name, focus) {
+    q(d, '.nw-tabs').forEach(function (tl) {
+      q(tl, '.nw-tab').forEach(function (t) {
+        var on = t.getAttribute('data-tab') === name;
+        t.classList.toggle('is-on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1;
+        if (on && focus && tl.offsetParent) t.focus();
+      });
+      q(tl.parentNode, '.nw-panel').forEach(function (p) {
+        var on = p.getAttribute('data-panel') === name;
+        p.classList.toggle('is-on', on); p.setAttribute('aria-hidden', on ? 'false' : 'true');
+        q(p, 'a').forEach(function (a) { a.tabIndex = on ? 0 : -1; });
+      });
+    });
+  }
+  function setupTabs() {
+    q(d, '.nw-tabs').forEach(function (tl, n) {
+      var tabs = q(tl, '.nw-tab'), panels = q(tl.parentNode, '.nw-panel');
+      tabs.forEach(function (t) {
+        var id = 'nw' + n + '-' + t.getAttribute('data-tab');
+        t.id = id + '-tab';
+        panels.forEach(function (p) { if (p.getAttribute('data-panel') === t.getAttribute('data-tab')) { p.id = id; p.setAttribute('aria-labelledby', t.id); t.setAttribute('aria-controls', id); } });
+        t.addEventListener('click', function () { selectTab(t.getAttribute('data-tab')); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          var i = tabs.indexOf(t), nx = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+          selectTab(nx.getAttribute('data-tab'), true);
+        });
+      });
+    });
+    selectTab('news');
   }
 
   /* ---------- スマホ：メニューと横スワイプ ---------- */
@@ -404,7 +439,7 @@
     var h1 = pc.querySelector('h1[data-op="chars"]'); if (h1) splitChars(h1, parseFloat(h1.getAttribute('data-d') || .9), .12);
     if ('IntersectionObserver' in W) setupReveal();
   }
-  setupSparks(); setupTrail(); setupSections(); setupLinks(); setupSP();
+  setupSparks(); setupTrail(); setupSections(); setupLinks(); setupTabs(); setupSP();
   layout();
 
   var started = false;

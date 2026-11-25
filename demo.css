@@ -69,6 +69,16 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .note .dot{position:absolute;left:50%;top:0;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.14);transition:transform .9s cubic-bezier(.3,.7,.2,1),color .5s ease,box-shadow .5s ease}
 .note .dot.l{box-shadow:0 0 0 4px rgba(11,44,36,.1)}
 
+/* ---------- お知らせ／社長コラムのタブ ----------
+   2つの一覧は同じ場所に重ねてあり（高さが変わらない）、押すとふわっと入れ替わる */
+.nw-tab{transition:color .4s ease,border-color .4s ease}
+.nw-tab:focus-visible{outline:1px solid currentColor;outline-offset:-6px}
+.nw-panel{transition:opacity .35s ease,visibility 0s linear .35s}
+.nw-panel.is-on{transition:opacity .6s ease .12s,visibility 0s}
+.nw-panel>a{transition:transform .6s cubic-bezier(.2,.7,.2,1) .12s}
+.nw-panel:not(.is-on)>a{transform:translateY(8px)}
+@media (hover:hover){.yp .nw-tab:not(.is-on):hover{color:#1B2A25}}
+
 /* ---------- スマホのメニュー ---------- */
 .spmenu{position:fixed;inset:0;z-index:60;background:#0B2C24;color:#fff;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
 .spmenu.open{opacity:1;visibility:visible;transition:opacity .5s ease}
