@@ -52,8 +52,8 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
   .yp footer a.en:hover>svg{transform:translateY(-5px)}
   .yp a .ph:not(.bl-i),.yp article .ph:not(.bl-i){transition:transform .4s cubic-bezier(.2,.7,.2,1)}
   .yp a:hover .ph,.yp article:hover .ph{transform:scale(1.045)}
-  .yp .news-row>span:last-child{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
-  .yp .news-row:hover>span:last-child{transform:translateX(8px)}
+  .yp .news-row .nw-t{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .yp .news-row:hover .nw-t{transform:translateX(8px)}
 }
 .js .yp .sc-arrow{animation:sc-arrow 2.6s ease-in-out infinite}
 @keyframes sc-arrow{0%,100%{transform:translateY(-2px)}50%{transform:translateY(5px)}}
