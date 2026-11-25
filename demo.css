@@ -3,7 +3,7 @@
    カンプ（PC 1440 / スマホ 390）をそのまま画面幅に合わせて拡大・縮小する。
    動きは「香りの演出ガイド」の 01〜06 に対応。
    ========================================================= */
-:root{--k:1;--sph:7759;--pch:7880;--fvh:800}
+:root{--k:1;--sph:7799;--pch:8032;--fvh:800}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#0B2C24}
 body{margin:0;background:#0B2C24;overflow-x:hidden}
 .stage{position:relative;overflow:hidden;margin:0 auto}
@@ -84,7 +84,7 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .spmenu nav a{display:flex;align-items:baseline;gap:18px;padding:17px 0 16px;border-bottom:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;font-size:18px;letter-spacing:.12em;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
 .spmenu nav a span{font-family:"Cormorant Garamond","Times New Roman",serif;font-size:14px;letter-spacing:.1em;color:#CFC6F2}
 .spmenu.open nav a{opacity:1;transform:none;transition-delay:calc(.12s + var(--i)*.05s)}
-.spmenu-cta{position:relative;display:flex;align-items:center;justify-content:space-between;height:64px;margin:30px 24px 0;padding:0 26px;background:#F6F2E9;color:#0B2C24;text-decoration:none;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;letter-spacing:.16em}
+.spmenu-cta{position:relative;display:flex;align-items:center;justify-content:space-between;height:64px;margin:30px 24px 0;padding:0 26px;background:#F6F2E9;color:#0B2C24;text-decoration:none;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;font-weight:500;letter-spacing:.14em}
 .spmenu-tel{position:relative;margin:26px 24px 40px;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;font-size:12px;line-height:1.9;letter-spacing:.06em;color:rgba(255,255,255,.72)}
 
 /* ---------- スマホ：香料ラインナップの横スワイプ ---------- */
