@@ -350,7 +350,15 @@
   }
 
   /* ---------- ページ内の移動 ---------- */
-  var GO = { '私たちについて': 'about', '香料製品': 'lineup', '自社製品': 'products', '研究開発': 'technology', 'サステナビリティ': 'sustainability', '採用情報': 'recruit', 'お知らせ': 'news', '社長コラム': 'news', 'お問い合わせ': 'contact' };
+  // メニュー・フッターの項目 → このページのどの区画へ動くか（小項目は、その内容を紹介している区画へ）
+  var GO = {
+    '山本香料について': 'about', '代表メッセージ': 'news', '香りのかたち': 'news', '会社概要': 'about', '沿革': 'about', '拠点（アクセス）': 'footer',
+    '事業紹介': 'technology', '研究所・アロマトロン': 'technology', '柏原工場': 'technology', '品質保証': 'technology',
+    '製品紹介': 'products', '天然精油': 'lineup', 'オーガニック精油': 'lineup', '香粧品香料': 'lineup', '食品香料': 'lineup', 'セラミド': 'lineup', '一般製品・OEM': 'products',
+    'サステナビリティ': 'sustainability', '香りのあかし': 'sustainability', 'ガバナンス': 'sustainability', 'コンプライアンス体制': 'sustainability', '環境・社会への取り組み': 'sustainability', '活動実績': 'sustainability', 'サステナビリティ方針': 'sustainability',
+    'お知らせ': 'news', '新着情報': 'news', '社長コラム': 'news', '採用情報': 'recruit', 'お問い合わせ': 'contact'
+  };
+  var GO_TAB = { 'お知らせ': 'all', '新着情報': 'news', '社長コラム': 'column' };
   function go(name) {
     var top = 0;
     if (name !== 'top') { var s = byName(name); if (!s) return; top = Math.round(s.top * S.k); }
@@ -360,7 +368,7 @@
     q(d, '.yp header a, .yp footer nav a, .sp footer nav a, .spmenu a').forEach(function (a) {
       var key = (a.getAttribute('data-go') || a.textContent).replace(/\s+/g, '').replace(/^\d+/, ''), name = GO[key];
       if (name) a.setAttribute('data-go', name);
-      if (key === '社長コラム' || key === 'お知らせ') a.setAttribute('data-go-tab', key === '社長コラム' ? 'column' : 'news');
+      if (GO_TAB[key]) a.setAttribute('data-go-tab', GO_TAB[key]);
     });
     q(d, '.yp footer a.en, .sp footer a.en, .yp header > a:first-child, .sp header > a:first-child').forEach(function (a) { a.setAttribute('data-go', 'top'); });
     d.addEventListener('click', function (e) {
