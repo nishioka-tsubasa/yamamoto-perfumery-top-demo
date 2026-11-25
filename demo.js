@@ -1,7 +1,7 @@
 /* 山本香料 トップページ デモ ／ 動きの制御
-   01 香りの軌跡（スクロールに合わせて、霞が晴れるように線が現れる） 02 香りの霞 03 香り立ち（写真）
-   04 香りの粒 05 見出しの現れ方 06 香りのノート表示
-   スマホは 01 と 02 だけを動かす（演出ガイドの決めごと）。 */
+   01 香りの流れ（区画のさかいめを、右から左・左から右へ交互に線が流れる） 02 香りの霞 03 香り立ち（写真）
+   04 香りの粒 05 見出しの現れ方 06 香りのノート表示 ／ ヘッダーは画面上に固定
+   スマホは 01・02・04 だけを動かす（演出ガイドの決めごと）。 */
 (function () {
   'use strict';
   var d = document, root = d.documentElement, W = window;
@@ -9,11 +9,10 @@
   var mq = W.matchMedia('(min-width:768px)');
   var pc = d.querySelector('.yp'), sp = d.querySelector('.sp');
   var noteEl = d.querySelector('.note');
-  var S = { k: 1, mode: '', vh: W.innerHeight };
-  var trails = { pc: null, sp: null };
-  var trailOn = !anim;
+  var S = { k: 1, mode: '', vh: W.innerHeight, w: 0, fvh: 0 };
   var secs = { pc: [], sp: [] };
-  var plx = [], motes = [];
+  var plx = [], flows = { pc: [], sp: [] }, flowsOn = !anim;
+  var ghd = { pc: d.querySelector('.ghd-pc'), sp: d.querySelector('.ghd-sp'), solid: null, light: null };
 
   function q(el, sel) { return Array.prototype.slice.call(el.querySelectorAll(sel)); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
@@ -23,62 +22,89 @@
     var w = root.clientWidth || W.innerWidth, isPC = mq.matches;
     S.mode = isPC ? 'pc' : 'sp';
     S.k = isPC ? Math.min(w, 1920) / 1440 : w / 390;
-    S.vh = W.innerHeight;
+    // スマホはアドレスバーの出入りで高さが変わるので、高さは幅が変わったときだけ読み直す
+    if (isPC || w !== S.w || !S.vh) S.vh = W.innerHeight;
+    S.w = w;
     root.style.setProperty('--k', S.k.toFixed(5));
-    if (!isPC) { var h = sp.offsetHeight; if (h) root.style.setProperty('--sph', h); }
+    if (isPC) {
+      // 最初の画面＝画面の高さ（ヘッダーは上に重なる）。極端な縦長・横長では 720〜960 に収める
+      var fvh = Math.round(clamp(S.vh / S.k, 720, 960));
+      if (fvh !== S.fvh) { S.fvh = fvh; root.style.setProperty('--fvh', fvh); }
+      root.style.setProperty('--pch', pc.offsetHeight);
+    } else { var h = sp.offsetHeight; if (h) root.style.setProperty('--sph', h); }
     var el = isPC ? pc : sp;
     secs[S.mode] = q(el, '.sec').map(function (s) {
       return { el: s, name: s.getAttribute('data-sec'), tone: s.getAttribute('data-tone'), top: s.offsetTop, h: s.offsetHeight };
     });
     if (isPC) { plx.forEach(function (p) { var s = secOf(p.el); p.top = s.offsetTop; p.h = s.offsetHeight; }); placeNote(); }
-    ensureTrail();
+    flows[S.mode].forEach(function (f) { var s = secOf(f.el); f.top = s.offsetTop + f.el.offsetTop; f.h = f.el.offsetHeight; });
+    ghd.solid = ghd.light = null;
     tick();
   }
   function secOf(el) { while (el && !(el.classList && el.classList.contains('sec'))) el = el.parentNode; return el; }
 
-  /* ---------- 01 香りの軌跡 ----------
-     線の先端を走らせて描くと、生き物が這うように見えてしまう。
-     そこで線は最初から全部そろえておき、画面の下のほうにある「ぼかしの帯」が
-     スクロールに少し遅れてついていくことで、霞が晴れるように上から順に現れる。 */
-  function Reveal(svg, startY) { this.svg = svg; this.cur = startY; this.start = startY; this.band = 360; }
-  Reveal.prototype.update = function (target, dt, band) {
-    var diff = target - this.cur, moving = false;
-    if (diff > .5) {
-      // 追いつく速さ：距離に比例（ゆるやかに減速）＋上限（速いスクロールでも急に出ない）
-      var stepLen = Math.min(diff * (1 - Math.exp(-dt * 2.2)), 1600 * dt);
-      this.cur += Math.max(stepLen, .5); moving = true;
+  /* ---------- 01 香りの流れ・04 香りの粒 ----------
+     線は区画のさかいめの余白を横切り、写真と文字の後ろを通る。
+     スクロールで区画が上がってくると、流れの向き（右→左／左→右）に、霞が晴れるように現れる。
+     現れ方は少し遅れて追いつき、指を止めてもふわっと流れ続ける。線全体もスクロールに合わせて流れの向きへ少し滑る。
+     粒は線のそばで生まれ、流れの向きへ漂いながら、ゆっくり立ちのぼる。 */
+  function setupFlows() {
+    [['pc', pc, 1440], ['sp', sp, 390]].forEach(function (m) {
+      q(m[1], '.flow').forEach(function (el, gi) {
+        var svg = el.querySelector('svg'), dir = el.getAttribute('data-dir'), spark = el.classList.contains('fv-sparks');
+        var f = { el: el, svg: svg, sign: dir === 'rtl' ? 1 : -1, spark: spark, W: m[2], p: anim ? 0 : 1, dx: 0, top: 0, h: 0, motes: [] };
+        if (anim) {
+          // 粒：SVGの丸を、なめらかに動かせる小さな光（HTML）に置き換える
+          var seed = 7 + gi * 13 + (m[0] === 'sp' ? 101 : 0);
+          var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+          q(svg, '.mo').forEach(function (c) {
+            var x = +c.getAttribute('cx'), y = +c.getAttribute('cy'), r = +c.getAttribute('r'), sz = (r * 2.3).toFixed(1);
+            var i = d.createElement('i'); i.className = 'mote';
+            var mx = spark ? (rnd() * 2 - 1) * 30 : -f.sign * (18 + rnd() * 38);
+            i.style.cssText = 'left:' + (x - r) + 'px;top:' + (y - r) + 'px;width:' + sz + 'px;height:' + sz + 'px;color:' + c.getAttribute('fill') +
+              ';--mx:' + mx.toFixed(0) + 'px;--my:' + (-(spark ? 70 : 46) - rnd() * (spark ? 90 : 60)).toFixed(0) + 'px;--mt:' + (8 + rnd() * 5).toFixed(1) + 's;--md:' + (-rnd() * 12).toFixed(1) + 's;--mo:' + Math.min(.85, +c.getAttribute('opacity') + .1).toFixed(2);
+            el.appendChild(i); c.parentNode.removeChild(c);
+            f.motes.push({ el: i, fx: dir === 'rtl' ? 1 - x / m[2] : x / m[2], on: false });
+          });
+        }
+        flows[m[0]].push(f);
+      });
+    });
+  }
+  function updateFlows(sy, vh, k, dt) {
+    var list = flows[S.mode], moving = false;
+    for (var i = 0; i < list.length; i++) {
+      var f = list[i], top = f.top * k - sy, h = f.h * k, c = top + h / 2;
+      if (top > vh + 200) continue;
+      if (top + h < -200) { if (f.p < 1 && flowsOn && !f.spark) { f.p = 1; f.svg.style.setProperty('--p', '1'); } continue; }  // 通り過ぎた線は出しておく
+      if (f.spark) {
+        if (flowsOn) for (var m = 0; m < f.motes.length; m++) if (!f.motes[m].on) { f.motes[m].on = true; f.motes[m].el.classList.add('on'); }
+        continue;
+      }
+      // 線のまとまりの中心が画面の下端に来たら現れはじめ、画面の半分ほど上がるころに出そろう
+      var target = flowsOn ? clamp((vh * 1.02 - c) / (vh * .46), 0, 1) : 0;
+      if (target > f.p + .001) { f.p += (target - f.p) * (1 - Math.exp(-dt * 2.4)); if (target - f.p < .002) f.p = target; moving = true; }
+      var dxT = f.sign * clamp(c / vh - .5, -1, 1) * (f.W > 600 ? 56 : 18);
+      if (Math.abs(dxT - f.dx) > .05) { f.dx += (dxT - f.dx) * (1 - Math.exp(-dt * 3)); moving = true; }
+      f.svg.style.setProperty('--p', f.p.toFixed(4));
+      f.svg.style.transform = 'translate3d(' + f.dx.toFixed(2) + 'px,0,0)';
+      var shown = f.p * 1.35 - .3;
+      for (var j = 0; j < f.motes.length; j++) {
+        var mo = f.motes[j];
+        if (!mo.on && shown >= mo.fx) { mo.on = true; mo.el.classList.add('on'); }
+      }
     }
-    if (Math.abs(band - this.band) > .5) this.band = band;
-    this.svg.style.setProperty('--rv', this.cur.toFixed(1) + 'px');
-    this.svg.style.setProperty('--band', this.band.toFixed(0) + 'px');
     return moving;
-  };
-  function ensureTrail() {
-    var m = S.mode;
-    if (trails[m] || !anim) return;
-    var svg = (m === 'pc' ? pc : sp).querySelector('.trail');
-    if (!svg) return;
-    trails[m] = new Reveal(svg, m === 'pc' ? 560 : 210);
-    trails[m].update(trails[m].start, 0, S.vh * .42 / S.k);
-    if (m === 'pc') makeMotes(svg);
   }
 
-  /* ---------- 04 香りの粒（PCのみ） ---------- */
-  function toneAt(y) { var list = secs.pc; for (var i = 0; i < list.length; i++) if (y < list[i].top + list[i].h) return list[i].tone; return 'light'; }
-  function makeMotes(svg) {
-    var box = d.createElement('div'); box.className = 'motes'; box.setAttribute('aria-hidden', 'true'); pc.appendChild(box);
-    var seed = 11; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-    // 粒はぼかした淡い光にして、数はページ全体で十数個に抑える
-    q(svg, '.ln').forEach(function (l, li) {
-      var len = l.getTotalLength(), step = li ? 1500 : 1100;
-      for (var s = 420 + li * 520; s < len - 300; s += step) {
-        var p = l.getPointAtLength(s), x = clamp(p.x + (rnd() * 2 - 1) * 30, 10, 1430), y = p.y + (rnd() * 2 - 1) * 16, sz = (3 + rnd() * 2.2).toFixed(1);
-        var dark = toneAt(y) === 'dark', el = d.createElement('i');
-        el.className = 'mote';
-        el.style.cssText = 'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;width:' + sz + 'px;height:' + sz + 'px;--mx:' + ((rnd() * 2 - 1) * 26).toFixed(0) + 'px;--md:' + (-rnd() * 9).toFixed(1) + 's;--mo:' + (dark ? '.6' : '.45') + ';color:' + (dark ? '#fff' : (rnd() > .5 ? '#8E86BE' : '#7C9E8B'));
-        box.appendChild(el); motes.push({ el: el, y: y, on: false });
-      }
-    });
+  /* ---------- ヘッダー：画面上に固定。下の区画の明るさに合わせて背景を切り替える ---------- */
+  function updateHeader(sy, k) {
+    var g = ghd[S.mode]; if (!g) return;
+    var solid = sy > 24, hh = S.mode === 'pc' ? (solid ? 76 : 104) : (solid ? 58 : 68), light = false;
+    var y = (sy + hh * k * .5) / k, list = secs[S.mode];
+    for (var i = 0; i < list.length; i++) if (y < list[i].top + list[i].h) { light = list[i].tone === 'light'; break; }
+    if (solid !== ghd.solid) { ghd.solid = solid; ghd.pc.classList.toggle('is-solid', solid); ghd.sp.classList.toggle('is-solid', solid); }
+    if (light !== ghd.light) { ghd.light = light; ghd.pc.classList.toggle('is-light', light); ghd.sp.classList.toggle('is-light', light); }
   }
 
   /* ---------- 06 香りのノート表示（PCのみ） ---------- */
@@ -124,12 +150,8 @@
     ticking = false;
     var dt = clamp((t - last) / 1000 || .016, .001, .05); last = t;
     var sy = W.pageYOffset || root.scrollTop || 0, k = S.k, vh = S.vh, moving = false;
-    var tr = trails[S.mode];
-    if (tr) {
-      // 画面の上から7割まではくっきり、その下の帯（画面の4割ぶん）でぼかしながら現れる
-      var band = vh * .42 / k, yT = trailOn ? (sy + vh * .7) / k + band : tr.start;
-      moving = tr.update(Math.max(yT, tr.start), dt, band);
-    }
+    updateHeader(sy, k);
+    if (anim) moving = updateFlows(sy, vh, k, dt);
     if (S.mode === 'pc') {
       updateNote((sy + vh * .5) / k, sy, vh, k);
       if (anim) {
@@ -138,10 +160,6 @@
           if (top > vh + 300 || top + h < -300) continue;
           var v = p.fv ? Math.max(0, sy / k) * p.f : -clamp((top + h / 2 - vh / 2) / vh, -1, 1) * p.f;
           p.el.style.transform = 'translate3d(0,' + v.toFixed(2) + 'px,0)' + (p.sc ? ' scale(' + p.sc + ')' : '');
-        }
-        for (var m = 0; m < motes.length; m++) {
-          var mo = motes[m], vy = mo.y * k - sy, on = vy > -120 && vy < vh + 160 && tr && tr.cur - tr.band >= mo.y;
-          if (on !== mo.on) { mo.on = on; mo.el.classList.toggle('on', on); }
         }
       }
     }
@@ -190,9 +208,9 @@
     });
     // 見出しのないラベル行
     q(pc, '.sec:not([data-sec="fv"]) .head').forEach(function (el) { if (isUsed(el)) return; el.classList.add('hd-row'); mark(el); group(el, [el]); });
-    // 斜めに切った写真3枚とその札
-    q(pc, '.cut').forEach(function (c, i) { group(c, [bloom(c.querySelector('img'), i * .16)]); });
-    q(pc, '.cap').forEach(function (c) { group(c, [rv(c, .5)]); });
+    // About の縦長写真3枚とその札
+    q(pc, '.mu').forEach(function (c, i) { group(c, [bloom(c.querySelector('img'), i * .18)]); });
+    q(pc, '.mu-cap').forEach(function (c, i) { group(c, [rv(c, .6 + i * .18)]); });
     // 自社製品のカード
     q(pc, '[data-sec="products"] article').forEach(function (a, i) {
       group(a, [rv(a, i * .14), bloom(a.querySelector('.ph'), i * .14 + .1), rv(a.querySelector('img:not(.ph)'), i * .14 + .7)]);
@@ -299,7 +317,7 @@
     var h1 = pc.querySelector('h1[data-op="chars"]'); if (h1) splitChars(h1, parseFloat(h1.getAttribute('data-d') || .9), .12);
     if ('IntersectionObserver' in W) setupReveal();
   }
-  setupSections(); setupLinks(); setupSP();
+  setupFlows(); setupSections(); setupLinks(); setupSP();
   layout();
 
   var started = false;
@@ -307,9 +325,9 @@
     if (started) return; started = true;
     root.classList.add('is-ready');
     layout();
-    setTimeout(function () { trailOn = true; tick(); }, anim ? (S.mode === 'pc' ? 1700 : 500) : 0);
+    setTimeout(function () { flowsOn = true; tick(); }, anim ? (S.mode === 'pc' ? 1400 : 500) : 0);
   }
-  var hero = (mq.matches ? pc : sp).querySelector('img');
+  var hero = (mq.matches ? pc : sp).querySelector('.ink img');
   var waits = [];
   if (hero && !hero.complete) waits.push(new Promise(function (r) { hero.addEventListener('load', r); hero.addEventListener('error', r); }));
   if (d.fonts && d.fonts.ready) waits.push(d.fonts.ready);

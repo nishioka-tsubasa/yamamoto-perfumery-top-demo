@@ -3,15 +3,39 @@
    カンプ（PC 1440 / スマホ 390）をそのまま画面幅に合わせて拡大・縮小する。
    動きは「香りの演出ガイド」の 01〜06 に対応。
    ========================================================= */
-:root{--k:1;--sph:7781}
+:root{--k:1;--sph:7759;--pch:7880;--fvh:800}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#0B2C24}
 body{margin:0;background:#0B2C24;overflow-x:hidden}
 .stage{position:relative;overflow:hidden;margin:0 auto}
-.stage-pc{width:calc(1440px*var(--k));height:calc(7980px*var(--k))}
+.stage-pc{width:calc(1440px*var(--k));height:calc(var(--pch)*1px*var(--k))}
 .stage-sp{width:calc(390px*var(--k));height:calc(var(--sph)*1px*var(--k))}
 .stage>.yp,.stage>.sp{position:absolute;left:0;top:0;transform-origin:0 0;transform:scale(var(--k))}
-@media (max-width:767.98px){.stage-pc,.note{display:none!important}}
-@media (min-width:768px){.stage-sp,.spmenu{display:none!important}}
+@media (max-width:767.98px){.stage-pc,.note,.ghd-pc{display:none!important}}
+@media (min-width:768px){.stage-sp,.spmenu,.ghd-sp{display:none!important}}
+
+/* ---------- ヘッダー：画面上に固定 ----------
+   最初の画面では透明。少しスクロールすると細くなり、下の区画の明るさに合わせて
+   深緑（暗い区画）／生成り（明るい区画）の背景に切り替わる */
+.ghd{position:fixed;left:0;right:0;top:0;z-index:40;pointer-events:none;--hh:104}
+.ghd-sp{--hh:68}
+.ghd-pc.is-solid{--hh:76}
+.ghd-sp.is-solid{--hh:58}
+.ghd-bar{position:absolute;left:0;right:0;top:0;height:calc(var(--hh)*1px*var(--k));background-color:rgba(11,44,36,0);transition:height .6s cubic-bezier(.3,.7,.2,1),background-color .6s ease,box-shadow .6s ease}
+.ghd.is-solid .ghd-bar{background-color:rgba(11,44,36,.9);-webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15)}
+.ghd.is-solid.is-light .ghd-bar{background-color:rgba(251,249,244,.9);box-shadow:0 1px 0 rgba(11,44,36,.08)}
+.ghd-in{position:relative;margin:0 auto;height:0}
+.ghd-pc .ghd-in{width:calc(1440px*var(--k))}
+.ghd-sp .ghd-in{width:calc(390px*var(--k))}
+.ghd .ghd-c{position:absolute;left:0;top:0;height:auto;overflow:visible;background:none;color:#fff;transform:scale(var(--k));transform-origin:0 0;transition:color .5s ease}
+.ghd-pc .ghd-c{width:1440px}
+.ghd-sp .ghd-c{width:390px}
+.ghd header{height:calc(var(--hh)*1px)!important;pointer-events:auto;transition:height .6s cubic-bezier(.3,.7,.2,1)}
+.ghd.is-solid.is-light .ghd-c{color:#0B2C24}
+.ghd header img{transition:filter .5s ease}
+.ghd.is-solid.is-light header img{filter:brightness(0) saturate(100%) invert(13%) sepia(18%) saturate(1200%) hue-rotate(113deg)!important}
+.ghd header a.go{transition:background-color .5s ease,color .5s ease}
+.ghd.is-solid.is-light header a.go{background:#0B2C24!important;color:#F6F2E9!important}
+.ghd-sp header button{color:inherit!important}
 
 .yp a,.sp a,.sp button,.spmenu a,.spmenu button{-webkit-tap-highlight-color:transparent}
 .sp button,.spmenu button{font:inherit;cursor:pointer}
@@ -73,9 +97,11 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
    ここから下は「動きを許可している人」だけに効く（html.js）
    ========================================================= */
 
-/* ---------- 01 香りの軌跡 ----------
-   線は全部そろえておき、ぼかしの帯（--band）の下端（--rv）を下へ動かして見せていく */
-.js .trail{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(var(--rv,0px) - var(--band,360px)),transparent var(--rv,0px));mask-image:linear-gradient(180deg,#000 0,#000 calc(var(--rv,0px) - var(--band,360px)),transparent var(--rv,0px))}
+/* ---------- 01 香りの流れ ----------
+   流れの向き（--fd）に、ぼかしの縁（幅35%）をすべらせて線を見せていく。--p は 0→1（JS） */
+.flow{--fd:90deg}
+.flow[data-dir="rtl"]{--fd:270deg}
+.js .flow:not(.fv-sparks) svg{will-change:transform;-webkit-mask-image:linear-gradient(var(--fd),#000 0,#000 calc(var(--p,0)*135% - 35%),transparent calc(var(--p,0)*135%));mask-image:linear-gradient(var(--fd),#000 0,#000 calc(var(--p,0)*135% - 35%),transparent calc(var(--p,0)*135%))}
 
 /* ---------- 02 香りの霞 ---------- */
 .js .haze{opacity:0;transition:opacity 2.6s ease .2s}
@@ -92,11 +118,12 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .js .bl-i.is-in{opacity:1;filter:none;transform:none}
 .js .bl-i.done{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
 
-/* ---------- 04 香りの粒 ---------- */
-.motes{position:absolute;left:0;top:0;width:0;height:0;z-index:5;pointer-events:none}
-.mote{position:absolute;border-radius:50%;background:currentColor;opacity:0;filter:blur(.8px)}
-.mote.on{animation:mote 9s ease-in-out var(--md,0s) infinite}
-@keyframes mote{0%{transform:translate3d(0,0,0);opacity:0}30%{opacity:var(--mo,.5)}100%{transform:translate3d(var(--mx,10px),-70px,0);opacity:0}}
+/* ---------- 04 香りの粒 ----------
+   線のそば・書のまわりで生まれ、流れの向きへ漂いながら、ゆっくり立ちのぼって消える */
+.mote{position:absolute;border-radius:50%;background:currentColor;opacity:0;filter:blur(.7px);pointer-events:none}
+.mote.on{animation:mote var(--mt,10s) ease-in-out var(--md,0s) infinite}
+.sec:not(.in-view) .mote.on{animation-play-state:paused}
+@keyframes mote{0%{transform:translate3d(0,0,0);opacity:0}25%{opacity:var(--mo,.6)}70%{opacity:calc(var(--mo,.6)*.75)}100%{transform:translate3d(var(--mx,10px),var(--my,-80px),0);opacity:0}}
 
 /* ---------- 05 見出しの現れ方 ---------- */
 .js .ch{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.16em);transition:opacity .9s ease var(--cd,0s),filter .9s ease var(--cd,0s),transform 1s cubic-bezier(.2,.7,.2,1) var(--cd,0s)}
