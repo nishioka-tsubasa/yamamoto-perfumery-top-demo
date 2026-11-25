@@ -100,6 +100,7 @@
       var P0 = tr.strands[0].P, n0 = tr.strands[0].n, cm = new Float32Array(n0), mx = -1e9;
       for (var i2 = 0; i2 < n0; i2++) { mx = Math.max(mx, P0[2 * i2 + 1]); cm[i2] = mx; }
       tr.cm = cm; tr.n = n0;
+      q(svg, '.ln-end').forEach(function (e) { e.parentNode.removeChild(e); });
       var box = d.createElement('div'); box.className = 'tmotes'; box.setAttribute('aria-hidden', 'true');
       svg.parentNode.insertBefore(box, svg.nextSibling);
       tr.motes = makeMotes(svg, box, m[0] === 'pc' ? 13 : 113, 26);
@@ -161,9 +162,10 @@
       if (tr.h < hMin) tr.h = hMin;  // 画面より上に置いてきた分は待たせない（ページ内リンクで飛んだときなど）
       if (hT > tr.h) tr.h += Math.min((hT - tr.h) * (1 - Math.exp(-dt * 2.2)), 55 * dt) + .02;
     }
-    var hFull = tr.h - tr.F;
     for (var si = 0; si < tr.strands.length; si++) {
       var S2 = tr.strands[si];
+      // 流れの先でぼかす。線の最後まで来たら、終わりの部分をぼかしたまま残す（書の中でふわっと消える）
+      var hFull = Math.min(tr.h, S2.n - 1) - tr.F;
       for (var c = 0; c < S2.chunks.length; c++) {
         var ch = S2.chunks[c];
         if (ch.y1 < y0 || ch.y0 > y1) continue;
