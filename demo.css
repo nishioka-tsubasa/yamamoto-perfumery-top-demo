@@ -3,7 +3,7 @@
    カンプ（PC 1440 / スマホ 390）をそのまま画面幅に合わせて拡大・縮小する。
    動きは「香りの演出ガイド」の 01〜06 に対応。
    ========================================================= */
-:root{--k:1;--sph:7799;--pch:8032;--fvh:800}
+:root{--k:1;--sph:7863;--pch:8032;--fvh:800}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#0B2C24}
 body{margin:0;background:#0B2C24;overflow-x:hidden}
 .stage{position:relative;overflow:hidden;margin:0 auto}
@@ -47,6 +47,7 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
   .yp header nav a:hover,.yp footer nav a:hover{background-size:100% 1px}
   .yp a svg,.yp .ar svg{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
   .yp a:hover>.ar svg,.yp a.ar:hover svg,.yp article:hover .ar svg,.yp a:hover>div>.ar svg,.yp a:hover>div>svg,.yp a.go:hover>svg{transform:translateX(6px)}
+  .yp a:hover>.more>.ar svg{transform:translateX(6px)}
   .yp header a.go:hover>svg{transform:translate(3px,-3px)}
   .yp footer a.en:hover>svg{transform:translateY(-5px)}
   .yp a .ph:not(.bl-i),.yp article .ph:not(.bl-i){transition:transform .4s cubic-bezier(.2,.7,.2,1)}
@@ -69,8 +70,8 @@ body{margin:0;background:#0B2C24;overflow-x:hidden}
 .note .dot{position:absolute;left:50%;top:0;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.14);transition:transform .9s cubic-bezier(.3,.7,.2,1),color .5s ease,box-shadow .5s ease}
 .note .dot.l{box-shadow:0 0 0 4px rgba(11,44,36,.1)}
 
-/* ---------- お知らせ／社長コラムのタブ ----------
-   2つの一覧は同じ場所に重ねてあり（高さが変わらない）、押すとふわっと入れ替わる */
+/* ---------- お知らせ・社長コラムの切り替え（すべて／お知らせ／社長コラム） ----------
+   3つの一覧は同じ場所に重ねてあり（高さが変わらない）、押すとふわっと入れ替わる */
 .nw-tab{transition:color .4s ease,border-color .4s ease}
 .nw-tab:focus-visible{outline:1px solid currentColor;outline-offset:-6px}
 .nw-panel{transition:opacity .35s ease,visibility 0s linear .35s}
